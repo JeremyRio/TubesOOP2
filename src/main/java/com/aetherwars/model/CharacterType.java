@@ -1,5 +1,5 @@
 package com.aetherwars.model;
 
-public enum Type {
+public enum CharacterType {
   OVERWORLD, NETHER, END
 };

@@ -11,20 +11,27 @@ import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import com.aetherwars.model.Type;
-import com.aetherwars.model.Character;
+import com.aetherwars.model.CharacterType;
+import com.aetherwars.model.CharacterCard;
 import com.aetherwars.util.CSVReader;
 
 public class AetherWars extends Application {
   private static final String CHARACTER_CSV_FILE_PATH = "card/data/character.csv";
+  private static final String SPELL_MORPH_CSV_FILE_PATH = "card/data/spell_morph.csv";
+  private static final String SPELL_PTN_CSV_FILE_PATH = "card/data/spell_ptn.csv";
+  private static final String SPELL_SWAP_CSV_FILE_PATH = "card/data/spell_swap.csv";
 
   public void loadCards() throws IOException, URISyntaxException {
     File characterCSVFile = new File(getClass().getResource(CHARACTER_CSV_FILE_PATH).toURI());
+    File morphCSVFile = new File(getClass().getResource(SPELL_MORPH_CSV_FILE_PATH).toURI());
+    File ptnCSVFile = new File(getClass().getResource(SPELL_PTN_CSV_FILE_PATH).toURI());
+    File swapCSVFile = new File(getClass().getResource(SPELL_SWAP_CSV_FILE_PATH).toURI());
+
     CSVReader characterReader = new CSVReader(characterCSVFile, "\t");
     characterReader.setSkipHeader(true);
     List<String[]> characterRows = characterReader.read();
     for (String[] row : characterRows) {
-      Character c = new Character(row[1], row[3], Type.valueOf(row[2]));
+      CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], row[3], CharacterType.valueOf(row[2]));
       System.out.println(c);
     }
   }
