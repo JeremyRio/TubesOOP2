@@ -27,7 +27,6 @@ public class CSVReader {
 
     /**
      * Creates a new reader from a file, using a separator
-     * @param csvFile file csv
      * @param separator separator of csv file
      */
     public CSVReader(String separator) {
@@ -73,5 +72,28 @@ public class CSVReader {
         }
         return list;
     }
+
+    /**
+     * Reads the csv file into list of integer.
+     * @throws IOException exception when reading csv file.
+     *         for example: file not found error
+     * @return list of integer
+     */
+    public List<Integer> readInt(File csvFile) throws IOException {
+        String line;
+        boolean firstLine = true;
+        FileReader fileReader = new FileReader(csvFile);
+        BufferedReader br = new BufferedReader(fileReader);
+        ArrayList<Integer> list = new ArrayList<Integer>();
+
+        while ((line = br.readLine()) != null) {
+            if (!firstLine || !this.skipFirstLine) {
+                list.add(Integer.parseInt(line));
+            }
+            firstLine = false;
+        }
+        return list;
+    }
+
 
 }
