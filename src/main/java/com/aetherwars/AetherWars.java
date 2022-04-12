@@ -3,7 +3,7 @@ package com.aetherwars;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.*;
 
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -11,8 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import com.aetherwars.model.CharacterType;
-import com.aetherwars.model.CharacterCard;
+import com.aetherwars.model.*;
 import com.aetherwars.util.CSVReader;
 
 public class AetherWars extends Application {
@@ -27,13 +26,38 @@ public class AetherWars extends Application {
     File ptnCSVFile = new File(getClass().getResource(SPELL_PTN_CSV_FILE_PATH).toURI());
     File swapCSVFile = new File(getClass().getResource(SPELL_SWAP_CSV_FILE_PATH).toURI());
 
-    CSVReader characterReader = new CSVReader(characterCSVFile, "\t");
-    characterReader.setSkipHeader(true);
-    List<String[]> characterRows = characterReader.read();
+    CSVReader csvReader = new CSVReader("\t");
+    csvReader.setSkipHeader(true);
+    List<String[]> characterRows = csvReader.read(characterCSVFile);
+    List<String[]> morphRows = csvReader.read(morphCSVFile);
+    List<String[]> ptnRows = csvReader.read(ptnCSVFile);
+    List<String[]> swapRows = csvReader.read(swapCSVFile);
+    HashMap<Integer, Card> cardMap = new HashMap<Integer, Card>();
+
     for (String[] row : characterRows) {
       CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], row[3], CharacterType.valueOf(row[2]));
-      System.out.println(c);
+      cardMap.put(c.getID(), c);
     }
+
+    for (String[] row : morphRows) {
+      MorphSpellCard m = new MorphSpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.MORPH, Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+      cardMap.put(m.getID(), m);
+    }
+
+    for (String[] row : ptnRows) {
+      PotionSpellCard p = new PotionSpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.PTN, Integer.parseInt(row[6]), Integer.parseInt(row[7]),Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+      cardMap.put(p.getID(), p);
+    }
+
+    for (String[] row : swapRows) {
+      SpellCard s = new SpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.SWAP, Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+    }
+
+    for (Map.Entry<Integer, Card> card : cardMap.entrySet()){
+      System.out.println(card.getValue().toString());
+    }
+
+    
   }
 
   @Override

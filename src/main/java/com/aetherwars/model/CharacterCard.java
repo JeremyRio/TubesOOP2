@@ -13,7 +13,7 @@ public class CharacterCard extends Card {
   }
 
   public CharacterCard(int id, String name, String description, CharacterType element) {
-    super(id, name, description);
+    super(id, name, description, CardType.CHARACTER);
     this.characterType = element;
   }
 
@@ -37,8 +37,5 @@ public class CharacterCard extends Card {
     return this.characterType;
   }
 
-  @Override
-  public String toString() {
-    return "ID: " + this.id + "\nName: " + this.name + "\nDescription: " + this.description + "\nType: " + this.characterType;
-  }
+
 }

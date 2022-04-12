@@ -30,8 +30,7 @@ public class CSVReader {
      * @param csvFile file csv
      * @param separator separator of csv file
      */
-    public CSVReader(File csvFile, String separator) {
-        this.csvFile = csvFile;
+    public CSVReader(String separator) {
         this.separator = separator;
         this.skipFirstLine = false;
     }
@@ -51,10 +50,10 @@ public class CSVReader {
      *         for example: file not found error
      * @return list of string array. Each list item represent a row.
      */
-    public List<String[]> read() throws IOException {
+    public List<String[]> read(File csvFile) throws IOException {
         String line;
         boolean firstLine = true;
-        FileReader fileReader = new FileReader(this.csvFile);
+        FileReader fileReader = new FileReader(csvFile);
         BufferedReader br = new BufferedReader(fileReader);
         ArrayList<String[]> list = new ArrayList<String[]>();
 
