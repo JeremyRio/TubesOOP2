@@ -22,6 +22,28 @@ public class Player {
         this.mana = 0;
     }
 
+    public void draw(Card card){
+        handCard.add(card);
+    }
 
+    public void discard(Card card){
+        handCard.remove(card);
+    }
 
+    public void playChar(CharacterCard card, int position){
+        characterBoard.set(position, card);
+        discard(card);
+    }
+
+    public void takeDamage(int damage){
+        health -= damage;
+    }
+
+    public void heal(int heal){
+        health += heal;
+    }
+
+    public void setMana(int mana){
+        this.mana = mana;
+    }
 }
