@@ -1,4 +1,4 @@
-package com.aetherwars.model;
+package com.aetherwars.model.card;
 
 public class Card {
     protected int id;

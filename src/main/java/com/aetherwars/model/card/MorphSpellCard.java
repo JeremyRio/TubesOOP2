@@ -1,4 +1,4 @@
-package com.aetherwars.model;
+package com.aetherwars.model.card;
 
 public class MorphSpellCard extends SpellCard {
     private int targetid;

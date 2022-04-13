@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import com.aetherwars.model.card.*;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import com.aetherwars.model.*;
 import com.aetherwars.util.CSVReader;
 
 public class AetherWars extends Application {
@@ -27,7 +27,6 @@ public class AetherWars extends Application {
     File ptnCSVFile = new File(getClass().getResource(SPELL_PTN_CSV_FILE_PATH).toURI());
     File swapCSVFile = new File(getClass().getResource(SPELL_SWAP_CSV_FILE_PATH).toURI());
     File player1DeckFile = new File(getClass().getResource(PLAYER1_DECK).toURI());
-
 
     CSVReader csvReader = new CSVReader("\t");
     csvReader.setSkipHeader(true);

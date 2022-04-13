@@ -1,4 +1,8 @@
-package com.aetherwars.model;
+package com.aetherwars.model.player;
+
+import com.aetherwars.model.card.Card;
+import com.aetherwars.model.card.CharacterCard;
+import com.aetherwars.model.card.SpellCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,5 +21,7 @@ public class Player {
         this.health = 80;
         this.mana = 0;
     }
+
+
 
 }
