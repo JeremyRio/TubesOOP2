@@ -13,8 +13,8 @@ public class Player {
     private int health;
     private int mana;
     private ArrayList<Card> handCard;
-    private List<CharacterCard> characterBoard;
-    private List<ArrayList<SpellCard>> spellBoard;
+    private List<SummonedCharacter> characterBoard;
+    // private List<ArrayList<SpellCard>> spellBoard;
 
     public Player(String name){
         this.name = name;
@@ -31,7 +31,8 @@ public class Player {
     }
 
     public void playChar(CharacterCard card, int position){
-        characterBoard.set(position, card);
+        SummonedCharacter summon = new SummonedCharacter(card);
+        characterBoard.set(position, summon);
         discard(card);
     }
 

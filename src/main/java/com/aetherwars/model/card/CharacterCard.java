@@ -3,6 +3,8 @@ package com.aetherwars.model.card;
 public class CharacterCard extends Card {
   private int attack;
   private int health;
+  private int attackUp;
+  private int hpUp;
   private int bonusAttack;
   private int bonusHealth;
   private CharacterType characterType;
