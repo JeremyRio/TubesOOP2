@@ -39,5 +39,12 @@ public class CharacterCard extends Card {
     return this.characterType;
   }
 
+  public int getAttack() { return this.attack; }
+
+  public int getHealth() { return this.health; }
+
+  public int getAttackUp() { return this.attackUp; }
+
+  public int getHpUp() { return this.hpUp; }
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.BoardGameeController">
+   <children>
+      <Pane prefHeight="619.0" prefWidth="1200.0" style="-fx-background-color: #FFE5B4;">
+         <children>
+            <HBox alignment="CENTER" layoutY="588.0" prefHeight="35.0" prefWidth="1200.0">
+               <children>
+                           <Label fx:id="draw_label" alignment="CENTER" prefHeight="40.0" prefWidth="240.0" style="-fx-background-color: #AEDBF6;" text="Draw" />
+                           <Label fx:id="plan_label" alignment="CENTER" prefHeight="40.0" prefWidth="240.0" style="-fx-background-color: grey;" text="Plan" />
+                           <Label fx:id="attack_label" alignment="CENTER" prefHeight="40.0" prefWidth="240.0" style="-fx-background-color: grey;" text="Attack" />
+                           <Label fx:id="end_label" alignment="CENTER" prefHeight="40.0" prefWidth="240.0" style="-fx-background-color: grey;" text="End" />
+                           <Button fx:id="next_phase" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" text="&gt;&gt;" />
+               </children>
+            </HBox>
+            <Pane fx:id="panePlayer1" prefHeight="586.0" prefWidth="600.0" />
+            <Pane fx:id="panePlayer2" layoutX="605.0" prefHeight="586.0" prefWidth="600.0" />
+         </children></Pane>
+      <Pane layoutY="619.0" prefHeight="380.0" prefWidth="1200.0">
+         <children>
+            <HBox prefHeight="380.0" prefWidth="600.0" style="-fx-background-color: #FFE5B4;" />
+            <HBox layoutX="600.0" layoutY="0.0" prefHeight="380.0" prefWidth="600.0">
+               <children>
+                  <VBox fx:id="hovered_card_view" alignment="CENTER" prefHeight="460.0" prefWidth="203.0" style="-fx-background-color: #DE8A19;">
+                     <children>
+                        <Label fx:id="description_hovered_card" text="Label" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children></Pane>
+   </children>
+</AnchorPane>

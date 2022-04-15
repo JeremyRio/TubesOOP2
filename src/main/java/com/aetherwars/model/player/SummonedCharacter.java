@@ -1,8 +1,17 @@
+package com.aetherwars.model.player;
+
+import com.aetherwars.model.card.CharacterCard;
+import com.aetherwars.model.card.SpellCard;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SummonedCharacter {
     private int exp;
     private int level;
     private CharacterCard character;
-    private List<Pair<Integer,SpellCard>> spel;
+    private List<Pair<Integer, SpellCard>> spel;
     private int baseAtk;
     private int baseHp;
     private int bonusAtk;
@@ -12,8 +21,8 @@ public class SummonedCharacter {
         this.character = c;
         this.level = 1;
         this.exp = 0;
-        this.baseAtk = this.character.baseAtk;
-        this.baseHp = this.character.baseHp;
+        this.baseAtk = this.character.getAttack();
+        this.baseHp = this.character.getHealth();
         this.bonusAtk = 0;
         this.bonusHp = 0;
         this.spel = new ArrayList<Pair<Integer,SpellCard>>();
@@ -23,8 +32,8 @@ public class SummonedCharacter {
         this.character = c;
         this.level = level;
         this.exp = exp;
-        this.baseAtk = this.character.attack;
-        this.baseHp = this.character.health;
+        this.baseAtk = this.character.getAttack();
+        this.baseHp = this.character.getHealth();
         this.bonusAtk = 0;
         this.bonusHp = 0;
         this.spel = new ArrayList<Pair<Integer,SpellCard>>();
@@ -40,23 +49,24 @@ public class SummonedCharacter {
 
     // menambahkan spell ke dalam daftar spell aktif
     public void addSpell(SpellCard s) {
-        this.spel.add(Pair.with(s.duration, s));
+//        this.spel.add(Pair.with(s.getDuration(), s));
         // Efek
     }
 
     public void removeSpell() {
-        for (int i=0; i<spel.size(); i++) {
-            if (spel.get(i).getValue0() == 0) {
-                spel.remove(i);
-                // Efek
-            }
-        }
+        // getValue sepertinya return pair
+//        for (int i=0; i<spel.size(); i++) {
+//            if (spel.get(i).getValue() == 0) {
+//                spel.remove(i);
+//                // Efek
+//            }
+//        }
     }
 
     // mengembalikan daftar spell aktif
-    public List<Spell> getActiveSpells() {
-        return this.spel;
-    }
+//    public List<Spell> getActiveSpells() {
+//        return this.spel;
+//    }
 
     // meningkatkan level karakter sebanyak 1
     // mereset xp ke 0
@@ -65,8 +75,8 @@ public class SummonedCharacter {
         if (this.exp >= (2*this.level - 1)) {
             this.exp -= (2*this.level - 1);
             this.level++;
-            this.baseAtk = this.character.attackUp;
-            this.baseHp = this.character.hpUp;
+            this.baseAtk = this.character.getAttackUp();
+            this.baseHp = this.character.getHpUp();
         } else {
             return;
         }
