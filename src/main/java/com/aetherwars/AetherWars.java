@@ -9,10 +9,8 @@ import com.aetherwars.controller.BoardGameeController;
 import com.aetherwars.model.card.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.aetherwars.util.CSVReader;
@@ -42,27 +40,33 @@ public class AetherWars extends Application {
     HashMap<Integer, Card> cardMap = new HashMap<>();
 
     for (String[] row : characterRows) {
-      CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], row[3], CharacterType.valueOf(row[2]));
+      CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], row[3], row[4],
+          CharacterType.valueOf(row[2]), Integer.parseInt(row[5]), Integer.parseInt(row[8]),
+          Integer.parseInt(row[6]), Integer.parseInt(row[9]));
       cardMap.put(c.getID(), c);
     }
 
     for (String[] row : morphRows) {
-      MorphSpellCard m = new MorphSpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.MORPH, Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+      MorphSpellCard m = new MorphSpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3],
+          Integer.parseInt(row[5]), Integer.parseInt(row[4]));
       cardMap.put(m.getID(), m);
 
     }
 
     for (String[] row : ptnRows) {
-      PotionSpellCard p = new PotionSpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.PTN, Integer.parseInt(row[6]), Integer.parseInt(row[7]),Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+      PotionSpellCard p = new PotionSpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3],
+          Integer.parseInt(row[6]), Integer.parseInt(row[7]), Integer.parseInt(row[5]),
+          Integer.parseInt(row[4]));
       cardMap.put(p.getID(), p);
     }
 
     for (String[] row : swapRows) {
-      SpellCard s = new SpellCard(Integer.parseInt(row[0]), row[1], row[2], SpellType.SWAP, Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+      SpellCard s = new SpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3], SpellType.SWAP,
+          Integer.parseInt(row[5]), Integer.parseInt(row[4]));
       cardMap.put(s.getID(), s);
     }
 
-    for (Map.Entry<Integer, Card> card : cardMap.entrySet()){
+    for (Map.Entry<Integer, Card> card : cardMap.entrySet()) {
       System.out.println(card.getValue().toString());
     }
 
@@ -74,35 +78,16 @@ public class AetherWars extends Application {
   }
 
   @Override
-  public void start(Stage stage) {
-//    Text text = new Text();
-//    text.setText("Loading...");
-//    text.setX(50);
-//    text.setY(50);
-//
-//    Group root = new Group();
-//    root.getChildren().add(text);
-//
-//    Scene scene = new Scene(root, 1280, 720);
-//
-//    stage.setTitle("Minecraft: Aether Wars");
-//    stage.setScene(scene);
-//    stage.show();
-
-    try {
-        FXMLLoader boardLoader = new FXMLLoader(getClass().getResource("views/boardGamee.fxml"));
-        boardLoader.setControllerFactory(c -> new BoardGameeController());
-        Parent root = boardLoader.load();
-        System.out.println("succeeded");
-        stage.setScene(new Scene(root,1200,1000));
-        stage.show();
-
-    } catch (Exception e) {
-      System.out.println("Failed to load cards game: " + e);
-    }
+  public void start(Stage stage) throws Exception {
+    FXMLLoader aetherWarsLoader = new FXMLLoader(getClass().getResource("view/AetherWars.fxml"));
+    Parent root = aetherWarsLoader.load();
+    stage.setTitle("Aether Wars");
+    stage.setScene(new Scene(root));
+    stage.setFullScreen(false);
+    stage.show();
   }
 
   public static void main(String[] args) {
-    launch();
+    launch(args);
   }
 }

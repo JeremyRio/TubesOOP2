@@ -6,6 +6,8 @@ public class CharacterCard extends Card {
   private int attackUp;
   private int hpUp;
   private int bonusAttack;
+  private int attackUp;
+  private int healthUp;
   private int bonusHealth;
   private CharacterType characterType;
 
@@ -14,9 +16,13 @@ public class CharacterCard extends Card {
     this.characterType = CharacterType.OVERWORLD;
   }
 
-  public CharacterCard(int id, String name, String description, CharacterType element) {
-    super(id, name, description, CardType.CHARACTER);
+  public CharacterCard(int id, String name, String description, String IMAGE_PATH, CharacterType element, int attack, int attackUp, int health, int healthUp) {
+    super(id, name, description, CardType.CHARACTER, IMAGE_PATH);
     this.characterType = element;
+    this.attack = attack;
+    this.attackUp = attackUp;
+    this.health = health;
+    this.healthUp = healthUp;
   }
 
   public int getTotalAttack(){
@@ -30,6 +36,10 @@ public class CharacterCard extends Card {
   public void setBonusAttack(int bonusAttack) {
     this.bonusAttack = bonusAttack;
   }
+
+  public void setAttack(int attack) { this.attack = attack; }
+  
+  public void setHealth(int health) { this.health = health; }
 
   public void setBonusHealth(int bonusHealth) {
     this.bonusHealth = bonusHealth;

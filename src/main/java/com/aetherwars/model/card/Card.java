@@ -1,9 +1,10 @@
 package com.aetherwars.model.card;
 
-public class Card {
+public abstract class Card {
     protected int id;
     protected String name;
     protected String description;
+    protected String IMAGE_PATH;
     protected CardType cardType;
 
     public Card(){
@@ -13,11 +14,12 @@ public class Card {
         this.cardType = CardType.CHARACTER;
     }
 
-    public Card(int id, String name, String description, CardType cardType) {
+    public Card(int id, String name, String description, CardType cardType, String IMAGE_PATH) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cardType = cardType;
+        this.IMAGE_PATH = IMAGE_PATH;
     }
 
     public int getID() {

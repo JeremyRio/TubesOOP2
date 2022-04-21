@@ -11,15 +11,15 @@ public class SpellCard extends Card {
         this.duration = 0;
     }
 
-    public SpellCard(int id, String name, String description, SpellType spellType, int mana) {
-        super(id, name, description, CardType.SPELL);
+    public SpellCard(int id, String name, String description, String IMAGE_PATH, SpellType spellType, int mana) {
+        super(id, name, description, CardType.SPELL, IMAGE_PATH);
         this.spellType = spellType;
         this.mana = mana;
         this.duration = 0;
     }
 
-    public SpellCard(int id, String name, String description, SpellType spellType, int mana, int duration) {
-        super(id, name, description, CardType.SPELL);
+    public SpellCard(int id, String name, String description, String IMAGE_PATH, SpellType spellType, int mana, int duration) {
+        super(id, name, description, CardType.SPELL, IMAGE_PATH);
         this.spellType = spellType;
         this.mana = mana;
         this.duration = duration;
