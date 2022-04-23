@@ -4,11 +4,7 @@ public class CharacterCard extends Card {
   private int attack;
   private int health;
   private int attackUp;
-  private int hpUp;
-  private int bonusAttack;
-  private int attackUp;
   private int healthUp;
-  private int bonusHealth;
   private CharacterType characterType;
 
   public CharacterCard() {
@@ -25,25 +21,13 @@ public class CharacterCard extends Card {
     this.healthUp = healthUp;
   }
 
-  public int getTotalAttack(){
-    return attack + bonusAttack;
-  }
 
-  public int getTotalHealth(){
-    return health + bonusHealth;
-  }
-
-  public void setBonusAttack(int bonusAttack) {
-    this.bonusAttack = bonusAttack;
-  }
 
   public void setAttack(int attack) { this.attack = attack; }
   
   public void setHealth(int health) { this.health = health; }
 
-  public void setBonusHealth(int bonusHealth) {
-    this.bonusHealth = bonusHealth;
-  }
+
 
   public CharacterType getCharacterType(){
     return this.characterType;
@@ -55,6 +39,6 @@ public class CharacterCard extends Card {
 
   public int getAttackUp() { return this.attackUp; }
 
-  public int getHpUp() { return this.hpUp; }
+  public int getHealthUp() { return this.healthUp; }
 
 }

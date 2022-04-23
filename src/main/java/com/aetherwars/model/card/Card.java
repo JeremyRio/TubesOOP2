@@ -36,6 +36,8 @@ public abstract class Card {
 
     public CardType getCardType() { return this.cardType; }
 
+    public String getImagePath() { return this.IMAGE_PATH; }
+
     @Override
     public String toString() {
         return "ID: " + this.id + "\nName: " + this.name + "\nDescription: " + this.description + "\nCard Type: " + this.cardType;
