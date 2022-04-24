@@ -1,8 +1,7 @@
 package com.aetherwars;
 
 import com.aetherwars.controller.AetherWarsController;
-import com.aetherwars.model.card.CharacterCard;
-import com.aetherwars.model.card.SummonedCard;
+import com.aetherwars.model.folder.GameChannel;
 import com.aetherwars.model.game.*;
 import com.aetherwars.model.game.CardDealer;
 import javafx.application.Application;
@@ -15,15 +14,20 @@ public class AetherWars extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
+
     try {
       CardDealer cardDealer = new CardDealer();
       Player player1 = new Player("Steve", cardDealer.getPlayer1Deck());
       Player player2 = new Player("Alex", cardDealer.getPlayer2Deck());
 
+      GameChannel gameChannel = new GameChannel();
       FXMLLoader aetherWarsLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/AetherWars.fxml"));
+      aetherWarsLoader.setControllerFactory(c -> new AetherWarsController(player1, player2, gameChannel));
       Parent root = aetherWarsLoader.load();
-      AetherWarsController gameController = aetherWarsLoader.getController();
-      gameController.player1_summonedCardController.get(0).setCard(new SummonedCard((CharacterCard) cardDealer.getCardMap().get(1)));
+
+      AetherWarsController mainController = aetherWarsLoader.getController();
+      gameChannel.setMainController(mainController);
+
 
 
       stage.setTitle("Aether Wars");
@@ -32,7 +36,8 @@ public class AetherWars extends Application {
       stage.show();
     }
     catch (Exception e) {
-      System.out.println("Error in AetherWars: " + e.getMessage());
+      System.out.println("Error in AetherWars: ");
+      e.printStackTrace();
     }
   }
 

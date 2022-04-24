@@ -19,8 +19,8 @@ public class CardDealer {
     private static final String PLAYER1_DECK = "../../card/data/player1_deck.csv";
     private static final String PLAYER2_DECK = "../../card/data/player2_deck.csv";
     private HashMap<Integer, Card> cardMap;
-    ArrayList<Card> deck1 = new ArrayList<>();
-    ArrayList<Card> deck2 = new ArrayList<>();
+    ArrayList<Card> deck1;
+    ArrayList<Card> deck2;
 
 
     public CardDealer() {
@@ -43,6 +43,8 @@ public class CardDealer {
         csvReader.setSkipHeader(true);
 
         this.cardMap = new HashMap<>();
+        this.deck1 = new ArrayList<>();
+        this.deck2 = new ArrayList<>();
         List<String[]> characterRows = csvReader.read(characterCSVFile);
         List<String[]> morphRows = csvReader.read(morphCSVFile);
         List<String[]> ptnRows = csvReader.read(ptnCSVFile);
@@ -73,17 +75,19 @@ public class CardDealer {
         }
 
         for (String[] row : swapRows) {
-            SpellCard s = new SpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3], SpellType.SWAP,
+            SpellCard s = new SwapSpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3],
                     Integer.parseInt(row[5]), Integer.parseInt(row[4]));
             this.cardMap.put(s.getID(), s);
         }
 
-//        for (Map.Entry<Integer, Card> card : this.cardMap.entrySet()) {
-//            System.out.println(card.getValue().toString());
-//        }
+//                for (Map.Entry<Integer, Card> card : this.cardMap.entrySet()) {
+//                    System.out.println(card.getValue().toString());
+//                }
+
 
         deck1List.forEach(id -> this.deck1.add(this.cardMap.get(id)));
         deck2List.forEach(id -> this.deck2.add(this.cardMap.get(id)));
+
     }
 
     public List<Card> getPlayer1Deck(){
