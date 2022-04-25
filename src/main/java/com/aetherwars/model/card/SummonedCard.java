@@ -16,6 +16,8 @@ public class SummonedCard {
     private List<SpellCard> activeSpells;
     private boolean hasAttacked;
     private boolean hasSummoned;
+    private boolean isEmpty;
+
 
     public SummonedCard(CharacterCard character) {
         this.character = character;
@@ -24,6 +26,9 @@ public class SummonedCard {
         this.bonusAttack = 0;
         this.bonusHealth = 0;
         this.activeSpells = new ArrayList<>();
+        this.hasSummoned = false;
+        this.hasAttacked = false;
+        this.isEmpty = true;
     }
 
     public void setHasAttacked(boolean hasAttacked){
@@ -32,6 +37,22 @@ public class SummonedCard {
 
     public void setHasSummoned(boolean hasSummoned){
         this.hasSummoned = hasSummoned;
+    }
+
+    public void setEmpty(boolean isEmpty){
+        this.isEmpty = isEmpty;
+    }
+
+    public boolean hasSummoned(){
+        return this.hasSummoned;
+    }
+
+    public boolean hasAttacked(){
+        return this.hasAttacked;
+    }
+
+    public boolean isEmpty(){
+        return this.isEmpty;
     }
 
     public int getTotalAttack(){
@@ -84,4 +105,7 @@ public class SummonedCard {
     public String getImagePath(){
         return this.character.getImagePath();
     }
+
+    
+
 }

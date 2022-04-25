@@ -2,29 +2,46 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="card_pane" prefHeight="101.0" prefWidth="101.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.SummonedCardController">
+<StackPane fx:id="card_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="101.0" prefWidth="101.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.SummonedCardController">
    <children>
-      <ImageView fx:id="image_card" fitHeight="60.0" fitWidth="60.0" layoutX="30.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../card/image/character/Ghast.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="19.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <ImageView fitHeight="17.0" fitWidth="22.0" layoutX="80.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../player/heart.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="22.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../player/sword.png" />
-         </image>
-      </ImageView>
-      <Text fx:id="health_text" layoutX="74.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="24.486328125000114" />
-      <Text fx:id="level_exp_text" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/1 (1)" textAlignment="CENTER" wrappingWidth="99.0" />
-      <Text fx:id="attack_text" layoutX="4.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="24.486328125000114" />
+      <Pane maxHeight="101.0" maxWidth="101.0" minHeight="101.0" minWidth="101.0" prefHeight="101.0" prefWidth="101.0">
+         <children>
+            <StackPane layoutY="2.0" prefHeight="40.0" prefWidth="101.0">
+               <children>
+                  <ImageView fx:id="image_card" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../card/image/character/Sheep.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <HBox alignment="CENTER" layoutY="42.0" prefHeight="20.0" prefWidth="101.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../player/heart.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="health_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutY="61.0" prefHeight="20.0" prefWidth="101.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../player/sword.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="attack_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+               </children>
+            </HBox>
+            <Text fx:id="level_exp_text" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="101.0" />
+         </children>
+      </Pane>
    </children>
-</AnchorPane>
+</StackPane>

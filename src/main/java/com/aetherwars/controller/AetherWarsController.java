@@ -6,16 +6,22 @@ import com.aetherwars.model.game.Phase;
 import com.aetherwars.model.game.Player;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
 
+
+import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static java.lang.System.out;
 
 public class AetherWarsController implements Initializable {
 
@@ -23,6 +29,9 @@ public class AetherWarsController implements Initializable {
     AnchorPane player1_zone1, player1_zone2, player1_zone3, player1_zone4, player1_zone5;
     @FXML
     AnchorPane player2_zone1, player2_zone2, player2_zone3, player2_zone4, player2_zone5;
+
+    @FXML
+    ImageView player1_avatar, player2_avatar;
 
     @FXML
     AnchorPane game_zone;
@@ -33,7 +42,9 @@ public class AetherWarsController implements Initializable {
     @FXML
     Rectangle draw, plan, attack, end;
 
-    private SummonedCardController[][] player_summonedCardController;
+    @FXML
+    HBox hand_card_box;
+
     private AnchorPane[][] player_board;
     private int current_player = 0;
     private int phase_idx = 1;
@@ -54,16 +65,13 @@ public class AetherWarsController implements Initializable {
 
     public void initialize(URL Location, ResourceBundle resources) {
         try {
-            player_summonedCardController = new SummonedCardController[2][];
             player_board = new AnchorPane[2][];
             player_board[0] = new AnchorPane[]{player1_zone1, player1_zone2, player1_zone3, player1_zone4, player1_zone5};
             player_board[1] = new AnchorPane[]{player2_zone1, player2_zone2, player2_zone3, player2_zone4, player2_zone5};
             playerList = new Player[]{player1, player2};
-            player_summonedCardController[0] = new SummonedCardController[5];
-            player_summonedCardController[1] = new SummonedCardController[5];
             phase_rectangle = new Rectangle[]{draw, plan, attack, end};
 
-            AnchorPane summonedPane = null;
+            StackPane summonedPane = null;
             StackPane drawCardPane = null;
 
             FXMLLoader drawCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/DrawCard.fxml"));
@@ -77,7 +85,7 @@ public class AetherWarsController implements Initializable {
                 FXMLLoader summonedCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/SummonedCard.fxml"));
                 summonedCardLoader.setControllerFactory(c -> new SummonedCardController(channel));
                 summonedPane = summonedCardLoader.load();
-                player_summonedCardController[0][i] = summonedCardLoader.getController();
+                channel.addSummonedController(0, summonedCardLoader.getController());
                 player_board[0][i].getChildren().add(summonedPane);
             }
 
@@ -85,11 +93,24 @@ public class AetherWarsController implements Initializable {
                 FXMLLoader summonedCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/SummonedCard.fxml"));
                 summonedCardLoader.setControllerFactory(c -> new SummonedCardController(channel));
                 summonedPane = summonedCardLoader.load();
-                player_summonedCardController[0][i] = summonedCardLoader.getController();
-                player_board[0][i].getChildren().add(summonedPane);
+                channel.addSummonedController(1, summonedCardLoader.getController());
+                player_board[1][i].getChildren().add(summonedPane);
             }
 
             drawCard();
+
+            player1_avatar.setOnMouseClicked(event -> {
+                try {
+                    if(event.getButton() == MouseButton.PRIMARY){
+                        if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(0))){
+
+                        }
+                    }
+                }catch (Exception e){
+                    out.println("Error in Player1Avatar: " + e);
+                    e.printStackTrace();
+                }
+            });
 
             phase_button.setOnAction(e -> {
                 switchPhase();
@@ -97,22 +118,54 @@ public class AetherWarsController implements Initializable {
             );
         }
         catch (Exception e) {
-            System.out.println("Error in AetherWarsController: ");
+            out.println("Error in AetherWarsController: ");
             e.printStackTrace();
         }
     }
 
-    public void addCard(Card card){
+    public boolean isSummonedZoneEmpty(List<SummonedCardController> controllerList){
+        for(SummonedCardController controller : controllerList){
+            if(!controller.getSummonedCard().isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Player getCurrentPlayer(){
+        return playerList[current_player];
+    }
+
+    public int getCurrentPlayerIDX(){
+        return current_player;
+    }
+
+    public void addDeckCard(Card card){
         try {
             drawnCard.remove(card);
-            playerList[current_player].addCard(drawnCard);
-
+            getCurrentPlayer().addDeckCard(drawnCard);
+            getCurrentPlayer().addHandCard(card);
+            List<Card> handCard = getCurrentPlayer().getHandCardList();
+            channel.getHandCardController().clear();
+            hand_card_box.getChildren().clear();
+            for (Card c : handCard) {
+                FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
+                handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
+                hand_card_box.getChildren().add(handCardLoader.load());
+                HandCardController controller = handCardLoader.getController();
+                controller.setCard(c);
+                channel.addHandCardController(controller);
+            }
             drawCardController.setVisible(false);
             this.switchPhase();
         } catch (Exception e) {
-            System.out.println("Error in addDeckCard: " + e);
+            out.println("Error in addDeckCard: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public HBox getHandCardBox(){
+        return hand_card_box;
     }
 
     public void drawCard(){

@@ -1,7 +1,6 @@
 package com.aetherwars.model.game;
 
 import com.aetherwars.model.card.Card;
-import com.aetherwars.model.card.CharacterCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,19 @@ public class Player {
     private List<Card> deckCard;
 
     public Player(String name, List<Card> deckCard){
+        handCard = new ArrayList<>();
         this.name = name;
         this.health = 80;
         this.mana = 0;
         this.deckCard = deckCard;
     }
 
-    public void addCard(List<Card> cards){
+    public void addHandCard(Card card){
+        handCard.add(card);
+    }
+
+
+    public void addDeckCard(List<Card> cards){
         cards.forEach(c ->{
             int min = 0;
             int max = deckCard.size() - 1;
@@ -38,6 +43,10 @@ public class Player {
         }
         drawnCard.forEach(c -> System.out.println(c.toString()));
         return drawnCard;
+    }
+
+    public List<Card> getHandCardList(){
+        return handCard;
     }
 
     public void discard(Card card){
