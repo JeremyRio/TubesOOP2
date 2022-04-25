@@ -102,8 +102,8 @@ public class AetherWarsController implements Initializable {
             player1_avatar.setOnMouseClicked(event -> {
                 try {
                     if(event.getButton() == MouseButton.PRIMARY){
-                        if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(0))){
-
+                        if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(0)) && channel.isSourceAttack()){
+                            getCurrentPlayer().takeDamage(channel.getSourceAttackController().getSummonedCard().getTotalAttack());
                         }
                     }
                 }catch (Exception e){
@@ -114,7 +114,15 @@ public class AetherWarsController implements Initializable {
 
             phase_button.setOnAction(e -> {
                 switchPhase();
+                switch(channel.getPhase()){
+                    case DRAW:
+                        this.current_player = (this.current_player + 1) % 2;
+                        drawCard();
+                        break;
+                    default:
+                        break;
                     }
+                }
             );
         }
         catch (Exception e) {

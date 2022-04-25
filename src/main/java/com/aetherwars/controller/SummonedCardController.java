@@ -40,6 +40,7 @@ public class SummonedCardController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        summonedCard = new SummonedCard();
         this.card_pane.setOpacity(0);
         this.card_pane.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
@@ -61,7 +62,26 @@ public class SummonedCardController implements Initializable {
                             case ATTACK:
                                 if(!this.summonedCard.isEmpty()) {
                                     if (channel.isSourceAttack() && !channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
-
+                                        SummonedCardController targetController = channel.getSourceAttackController();
+                                        this.summonedCard.Attack(targetController.getSummonedCard());
+                                        out.println(this.summonedCard.isDead());
+                                        if(this.summonedCard.isDead() && !targetController.getSummonedCard().isDead()){
+                                            this.summonedCard.setEmpty(true);
+                                            this.card_pane.setOpacity(0);
+                                            targetController.getSummonedCard().addExp(this.summonedCard.getLevel());
+                                        }else if(targetController.getSummonedCard().isDead() && !this.summonedCard.isDead()){
+                                            targetController.getSummonedCard().setEmpty(true);
+                                            targetController.card_pane.setOpacity(0);
+                                            this.summonedCard.addExp(targetController.getSummonedCard().getLevel());
+                                        }else if (this.summonedCard.isDead() && targetController.getSummonedCard().isDead()){
+                                            this.summonedCard.setEmpty(true);
+                                            this.card_pane.setOpacity(0);
+                                            targetController.getSummonedCard().setEmpty(true);
+                                            targetController.card_pane.setOpacity(0);
+                                        }
+                                        this.updateCard();
+                                        targetController.updateCard();
+                                        channel.setSourceAttack(false);
                                     } else {
                                         channel.setSourceAttack(true);
                                         channel.setSourceAttackController(this);

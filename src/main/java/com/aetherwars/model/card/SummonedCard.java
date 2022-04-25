@@ -11,20 +11,23 @@ public class SummonedCard {
     private int exp;
     private int level;
     private int bonusAttack;
-    private int bonusHealth;
+    private float bonusHealth;
     private CharacterCard character;
     private List<SpellCard> activeSpells;
     private boolean hasAttacked;
     private boolean hasSummoned;
     private boolean isEmpty;
 
+    public SummonedCard(){
+        this.isEmpty = true;
+    }
 
     public SummonedCard(CharacterCard character) {
         this.character = character;
         this.exp = 0;
         this.level = 1;
         this.bonusAttack = 0;
-        this.bonusHealth = 0;
+        this.bonusHealth = 0.0f;
         this.activeSpells = new ArrayList<>();
         this.hasSummoned = false;
         this.hasAttacked = false;
@@ -47,6 +50,10 @@ public class SummonedCard {
         return this.hasSummoned;
     }
 
+    public CharacterCard getCharacterCard(){
+        return this.character;
+    }
+
     public boolean hasAttacked(){
         return this.hasAttacked;
     }
@@ -59,7 +66,7 @@ public class SummonedCard {
         return character.getAttack() + bonusAttack;
     }
 
-    public int getTotalHealth(){
+    public float getTotalHealth(){
         return character.getHealth() + bonusHealth;
     }
 
@@ -67,27 +74,113 @@ public class SummonedCard {
         this.bonusAttack = bonusAttack;
     }
 
-    public void setBonusHealth(int bonusHealth) {
+    public void setBonusHealth(float bonusHealth) {
         this.bonusHealth = bonusHealth;
     }
 
-    public void checkLevelUp(){
-        boolean islevelUp = true;
-        while(islevelUp) {
-            if (this.exp >= this.getExpToNextLevel()) {
-                this.levelUp();
-            }
-            else{
-                islevelUp = false;
-            }
+    public boolean isDead(){
+        return getTotalHealth() < 0.0f;
+    }
+
+    public float getBonusHealth(){
+        return this.bonusHealth;
+    }
+
+    public void addExp(int exp){
+        this.exp += exp;
+        this.levelUp();
+    }
+
+    public void setAttack(int attack){
+        this.character.setAttack(attack);
+    }
+
+    public float getAttackModifier(SummonedCard target){
+        float modifier = 1;
+        CharacterType targetType = target.getCharacterCard().getCharacterType();
+        switch(this.character.getCharacterType()){
+            case OVERWORLD:
+                switch (targetType){
+                    case NETHER:
+                        modifier = 0.5f;
+                        break;
+                    case END:
+                        modifier = 2;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case NETHER:
+                switch (targetType){
+                    case OVERWORLD:
+                        modifier = 2;
+                        break;
+                    case END:
+                        modifier = 0.5f;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                switch (targetType){
+                    case OVERWORLD:
+                        modifier = 0.5f;
+                        break;
+                    case NETHER:
+                        modifier = 2;
+                        break;
+                    default:
+                        break;
+                }
         }
+        return modifier;
+    }
+
+
+    public void Attack(SummonedCard targetCard){
+        float newSourceBonusHealth = this.bonusHealth;
+        float newSourceHealth = this.character.getHealth();
+        float newTargetBonusHealth = targetCard.getBonusHealth();
+        float newTargetHealth = targetCard.getCharacterCard().getHealth();
+
+        float modifierSource = this.getAttackModifier(targetCard);
+        float modifierTarget = targetCard.getAttackModifier(this);
+
+        float sourceAttack = (float) this.getTotalAttack();
+        if(sourceAttack > newTargetBonusHealth){
+            sourceAttack -= newTargetBonusHealth;
+            newTargetBonusHealth = 0.0f;
+            newTargetHealth -= sourceAttack;
+        }else{
+            newTargetBonusHealth -= sourceAttack;
+        }
+
+        targetCard.getCharacterCard().setHealth(newTargetHealth);
+        targetCard.setBonusHealth(newTargetBonusHealth);
+
+
+        float targetAttack = (float) targetCard.getTotalAttack();
+        if(targetAttack > newSourceBonusHealth){
+            targetAttack -= newSourceBonusHealth;
+            newSourceBonusHealth = 0.0f;
+            newSourceHealth -= targetAttack;
+        }else{
+            newSourceBonusHealth -= targetAttack;
+        }
+
+        this.character.setHealth(newSourceHealth);
+        this.bonusHealth = newSourceBonusHealth;
     }
 
     public void levelUp(){
-        this.exp -= getExpToNextLevel();
-        this.level++;
-        this.character.setAttack(this.character.getAttackUp() + this.character.getAttack());
-        this.character.setHealth(this.character.getHealthUp() + this.character.getHealth());
+        if (this.exp >= getExpToNextLevel()) {
+            this.exp -= getExpToNextLevel();
+            this.level++;
+            this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
+            this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
+        }
     }
 
     public int getExpToNextLevel(){
@@ -105,7 +198,5 @@ public class SummonedCard {
     public String getImagePath(){
         return this.character.getImagePath();
     }
-
-    
 
 }
