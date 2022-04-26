@@ -3,6 +3,9 @@ package com.aetherwars.controller;
 import com.aetherwars.model.card.CharacterCard;
 import com.aetherwars.model.card.SummonedCard;
 import com.aetherwars.model.event.GameChannel;
+import com.aetherwars.model.card.PotionSpellCard;
+import com.aetherwars.model.card.SwapSpellCard;
+import com.aetherwars.model.card.SpellCard;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -60,6 +63,21 @@ public class SummonedCardController implements Initializable {
                                         channel.getMainController().updateUIText();
                                     }
                                 }
+                                // else {
+                                //     if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
+                                //         System.out.println(this.summonedCard.getClass());
+                                //         if (channel.getSourcePlanController().getCard() instanceof PotionSpellCard){
+                                //             updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
+                                //             channel.getSourcePlanController().destroyCard();
+                                //             channel.setSourcePlan(false);
+                                //         }
+                                //         else if (channel.getSourcePlanController().getCard() instanceof SwapSpellCard){
+                                //             updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
+                                //             channel.getSourcePlanController().destroyCard();
+                                //             channel.setSourcePlan(false);
+                                //         }
+                                //     }
+                                // }
                                 break;
                             case ATTACK:
                                 if(!this.summonedCard.isEmpty()) {
@@ -132,6 +150,12 @@ public class SummonedCardController implements Initializable {
             level_exp_text.setText("MAX ["
                     + this.summonedCard.getLevel() + "]");
         }
+    }
+
+    public void updateSpellCard(SpellCard summonedCard) {
+        this.summonedCard.addActiveSpell(summonedCard);
+        health_text.setText(String.valueOf(this.summonedCard.getTotalHealth()));
+        attack_text.setText(String.valueOf(this.summonedCard.getTotalAttack()));
     }
 
 }

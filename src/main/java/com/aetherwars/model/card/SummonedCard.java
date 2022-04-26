@@ -20,6 +20,7 @@ public class SummonedCard {
     private boolean hasAttacked;
     private boolean hasSummoned;
     private boolean isEmpty;
+    private boolean swapActivated; 
 
     public SummonedCard(){
         this.isEmpty = true;
@@ -36,6 +37,7 @@ public class SummonedCard {
         this.hasAttacked = false;
         this.summonedHealth = character.getHealth();
         this.isEmpty = true;
+        this.swapActivated = false;
     }
 
     public void setHasAttacked(boolean hasAttacked){
@@ -75,8 +77,9 @@ public class SummonedCard {
     }
 
     public int getTotalAttack(){
-        return this.character.getAttack() + this.bonusAttack;
-    }
+        int result = this.character.getAttack() + this.bonusAttack;
+        return result = (result < 0) ? 0 : result;
+    }  
 
     public float getTotalHealth(){
         return this.summonedHealth + this.bonusHealth;
@@ -215,5 +218,85 @@ public class SummonedCard {
     public String getImagePath(){
         return this.character.getImagePath();
     }
+    // Spells
 
+    public void addActiveSpell(SpellCard other) {
+        if (other.getDuration() != 0 && !swapActivated){
+            this.activeSpells.add(other);
+        }
+        if (other instanceof PotionSpellCard) {
+            PotionSpellCard temp = (PotionSpellCard) other;
+            this.bonusAttack += temp.getAttack();
+            this.bonusHealth += temp.getHP();
+        }
+        // else if (other instanceof LevelSpellCard){
+        //     // TODO
+        // }
+        else if (other instanceof MorphSpellCard){
+            // TODO
+        }
+        else if (other instanceof SwapSpellCard) {
+            if (swapActivated) {
+                this.addDuration(other);
+            }
+            else {
+                this.swapActivated = true;
+                int tempAttack = this.character.getAttack();
+                int tempBonusAttack = this.bonusAttack;
+                this.character.setAttack( (int) this.character.getHealth());
+                this.setSummonedHealth(tempAttack);
+                this.bonusAttack = (int) this.bonusHealth;
+                this.bonusHealth = tempBonusAttack;
+            }
+        }
+    }
+
+    // Mengurangi durasi pada list activeSpell
+    public void updateDuration() {
+        for (SpellCard activeSpell: activeSpells) {
+            activeSpell.decreaseDuration();
+            if (activeSpell.getDuration() == 0) {
+                revertSpell(activeSpell);
+                activeSpells.remove(activeSpell);
+            }
+        }
+    }
+
+    // Membalikkan efek dari spell
+    public void revertSpell(SpellCard other) {
+        if (other instanceof PotionSpellCard) {
+            PotionSpellCard temp = (PotionSpellCard) other;
+            this.bonusHealth -=  temp.getHP();
+            this.bonusAttack -= temp.getAttack();
+        }
+        // else if (other instanceof LevelSpellCard){
+        //     // TODO
+        // }
+        else if (other instanceof MorphSpellCard){
+            // TODO
+        }
+        else if (other instanceof SwapSpellCard) {
+            int tempAttack = this.character.getAttack();
+            int tempBonusAttack = this.bonusAttack;
+            this.character.setAttack( (int) this.character.getHealth());
+            this.setSummonedHealth(tempAttack);
+            this.bonusAttack = (int) this.bonusHealth;
+            this.bonusHealth = tempBonusAttack;
+        }
+    }
+
+    // Menambahkan durasi pada spell card swap
+    public void addDuration(SpellCard other) {
+        for (SpellCard activeSpell: activeSpells) {
+            if (activeSpell.getSpellType() == SpellType.SWAP) {
+                activeSpell.setDuration(activeSpell.getDuration() + other.getDuration());
+                break;
+            }
+        }
+    }
+
+    // Menghapuskan active spells bisa digunakan kalau sudah mati karakter
+    public void clearActiveSpells() {
+        this.activeSpells.clear();
+    }
 }
