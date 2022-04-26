@@ -1,4 +1,4 @@
-package com.aetherwars.model.folder;
+package com.aetherwars.model.event;
 
 import com.aetherwars.controller.AetherWarsController;
 import com.aetherwars.controller.HandCardController;

@@ -1,7 +1,7 @@
 package com.aetherwars.controller;
 
 import com.aetherwars.model.card.*;
-import com.aetherwars.model.folder.GameChannel;
+import com.aetherwars.model.event.GameChannel;
 import com.aetherwars.util.ConfirmationBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -61,6 +61,12 @@ public class HandCardController implements Initializable {
                                     out.println("Source: " + gameChannel.isSourcePlan());
                             }
                             break;
+                        case END:
+                            if(event.getClickCount() == 2){
+                                if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
+                                    destroyCard();
+                                }
+                            }
                     }
                 }
             });

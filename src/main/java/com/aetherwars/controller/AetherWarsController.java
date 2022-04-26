@@ -1,7 +1,7 @@
 package com.aetherwars.controller;
 
 import com.aetherwars.model.card.Card;
-import com.aetherwars.model.folder.GameChannel;
+import com.aetherwars.model.event.GameChannel;
 import com.aetherwars.model.game.Phase;
 import com.aetherwars.model.game.Player;
 import javafx.fxml.FXMLLoader;
@@ -113,14 +113,18 @@ public class AetherWarsController implements Initializable {
             });
 
             phase_button.setOnAction(e -> {
-                switchPhase();
-                switch(channel.getPhase()){
-                    case DRAW:
-                        this.current_player = (this.current_player + 1) % 2;
-                        drawCard();
-                        break;
-                    default:
-                        break;
+                if(channel.getPhase() == Phase.END && getCurrentPlayer().getHandCardList().size() == 5){
+                    out.println("THROW A CARD!");
+                } else{
+                    switchPhase();
+                    switch(channel.getPhase()){
+                        case DRAW:
+                            this.current_player = (this.current_player + 1) % 2;
+                            drawCard();
+                            break;
+                        default:
+                            break;
+                        }
                     }
                 }
             );
@@ -154,8 +158,6 @@ public class AetherWarsController implements Initializable {
             getCurrentPlayer().addDeckCard(drawnCard);
             getCurrentPlayer().addHandCard(card);
             List<Card> handCard = getCurrentPlayer().getHandCardList();
-            channel.getHandCardController().clear();
-            hand_card_box.getChildren().clear();
             for (Card c : handCard) {
                 FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
                 handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
@@ -178,12 +180,23 @@ public class AetherWarsController implements Initializable {
 
     public void drawCard(){
         drawCardController.setVisible(true);
+        channel.getHandCardController().clear();
+        hand_card_box.getChildren().clear();
         drawnCard = new ArrayList<>();
         drawnCard = playerList[current_player].draw();
-        HandCardController[] controller = drawCardController.getHandCardController();
-        for(int i = 0; i < drawnCard.size(); i++){
-            controller[i].setCard(drawnCard.get(i));
-        }
+        drawCardController.draw_card_box.getChildren().clear();
+        drawnCard.forEach(c -> {
+            try {
+                FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
+                handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
+                drawCardController.draw_card_box.getChildren().add(handCardLoader.load());
+                HandCardController controller = handCardLoader.getController();
+                controller.setCard(c);
+            }catch (Exception e){
+                out.println("Error in DrawCard: " + e);
+                e.printStackTrace();
+            }
+        });
     }
 
     public void switchPhase(){

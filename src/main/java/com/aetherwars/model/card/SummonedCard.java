@@ -7,9 +7,12 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public class SummonedCard {
     private int exp;
     private int level;
+    private float summonedHealth;
     private int bonusAttack;
     private float bonusHealth;
     private CharacterCard character;
@@ -31,6 +34,7 @@ public class SummonedCard {
         this.activeSpells = new ArrayList<>();
         this.hasSummoned = false;
         this.hasAttacked = false;
+        this.summonedHealth = character.getHealth();
         this.isEmpty = true;
     }
 
@@ -50,6 +54,14 @@ public class SummonedCard {
         return this.hasSummoned;
     }
 
+    public void setSummonedHealth(float health){
+        this.summonedHealth = health;
+    }
+
+    public float getSummonedHealth(){
+        return this.summonedHealth;
+    }
+
     public CharacterCard getCharacterCard(){
         return this.character;
     }
@@ -63,11 +75,11 @@ public class SummonedCard {
     }
 
     public int getTotalAttack(){
-        return character.getAttack() + bonusAttack;
+        return this.character.getAttack() + this.bonusAttack;
     }
 
     public float getTotalHealth(){
-        return character.getHealth() + bonusHealth;
+        return this.summonedHealth + this.bonusHealth;
     }
 
     public void setBonusAttack(int bonusAttack) {
@@ -79,7 +91,7 @@ public class SummonedCard {
     }
 
     public boolean isDead(){
-        return getTotalHealth() < 0.0f;
+        return getTotalHealth() <= 0.0f;
     }
 
     public float getBonusHealth(){
@@ -141,14 +153,15 @@ public class SummonedCard {
 
     public void Attack(SummonedCard targetCard){
         float newSourceBonusHealth = this.bonusHealth;
-        float newSourceHealth = this.character.getHealth();
+        float newSourceHealth = this.getSummonedHealth();
         float newTargetBonusHealth = targetCard.getBonusHealth();
-        float newTargetHealth = targetCard.getCharacterCard().getHealth();
+        float newTargetHealth = targetCard.getSummonedHealth();
 
         float modifierSource = this.getAttackModifier(targetCard);
         float modifierTarget = targetCard.getAttackModifier(this);
 
-        float sourceAttack = (float) this.getTotalAttack();
+        float sourceAttack = modifierSource * (float) this.getTotalAttack();
+        out.println(sourceAttack);
         if(sourceAttack > newTargetBonusHealth){
             sourceAttack -= newTargetBonusHealth;
             newTargetBonusHealth = 0.0f;
@@ -157,11 +170,12 @@ public class SummonedCard {
             newTargetBonusHealth -= sourceAttack;
         }
 
-        targetCard.getCharacterCard().setHealth(newTargetHealth);
+        targetCard.setSummonedHealth(newTargetHealth);
         targetCard.setBonusHealth(newTargetBonusHealth);
 
 
-        float targetAttack = (float) targetCard.getTotalAttack();
+        float targetAttack = modifierTarget * (float) targetCard.getTotalAttack();
+        out.println(targetAttack);
         if(targetAttack > newSourceBonusHealth){
             targetAttack -= newSourceBonusHealth;
             newSourceBonusHealth = 0.0f;
@@ -170,7 +184,7 @@ public class SummonedCard {
             newSourceBonusHealth -= targetAttack;
         }
 
-        this.character.setHealth(newSourceHealth);
+        this.setSummonedHealth(newSourceHealth);
         this.bonusHealth = newSourceBonusHealth;
     }
 
@@ -180,6 +194,7 @@ public class SummonedCard {
             this.level++;
             this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
             this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
+            this.setSummonedHealth(this.character.getHealth());
         }
     }
 

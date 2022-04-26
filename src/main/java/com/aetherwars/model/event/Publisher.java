@@ -1,4 +1,4 @@
-package com.aetherwars.model.folder;
+package com.aetherwars.model.event;
 
 public interface Publisher {
     void publish(Event event);

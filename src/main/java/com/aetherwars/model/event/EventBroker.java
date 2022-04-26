@@ -1,4 +1,4 @@
-package com.aetherwars.model.folder;
+package com.aetherwars.model.event;
 
 public interface EventBroker {
     public void sendEvent(Publisher publisher, Event event);

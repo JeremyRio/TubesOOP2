@@ -1,9 +1,10 @@
 package com.aetherwars.controller;
 
 
-import com.aetherwars.model.folder.GameChannel;
+import com.aetherwars.model.event.GameChannel;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.fxml.FXML;
@@ -14,15 +15,10 @@ import java.util.ResourceBundle;
 public class DrawCardController implements  Initializable{
 
     @FXML
-    StackPane drawCardPane;
+    StackPane draw_card_pane;
 
     @FXML
-    Pane draw_slot1, draw_slot2, draw_slot3;
-
-    @FXML
-    private HandCardController[] handCardController;
-    private Pane[] draw_slots;
-    private StackPane slotPane;
+    HBox draw_card_box;
 
     private GameChannel channel;
 
@@ -31,29 +27,13 @@ public class DrawCardController implements  Initializable{
     }
 
     public void  initialize(URL location, ResourceBundle resources){
-        try {
-            handCardController = new HandCardController[3];
-            draw_slots = new Pane[]{draw_slot1, draw_slot2, draw_slot3};
-            for (int i = 0; i < 3; i++) {
-                FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
-                handCardLoader.setControllerFactory(c -> new HandCardController(channel));
-                slotPane = handCardLoader.load();
-                handCardController[i] = handCardLoader.getController();
-                draw_slots[i].getChildren().add(slotPane);
-            }
-        }
-        catch (Exception e){
-            System.out.println("Error draw card controller: ");
-            e.printStackTrace();
-        }
+
     }
 
     public void setVisible(boolean visible){
-        drawCardPane.setVisible(visible);
+        draw_card_pane.setVisible(visible);
     }
 
-    public HandCardController[] getHandCardController(){
-        return handCardController;
-    }
+
 
 }

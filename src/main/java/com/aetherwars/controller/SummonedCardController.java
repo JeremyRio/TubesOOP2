@@ -2,7 +2,7 @@ package com.aetherwars.controller;
 
 import com.aetherwars.model.card.CharacterCard;
 import com.aetherwars.model.card.SummonedCard;
-import com.aetherwars.model.folder.GameChannel;
+import com.aetherwars.model.event.GameChannel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -50,7 +50,7 @@ public class SummonedCardController implements Initializable {
                                     if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         if (channel.getSourcePlanController().getCard() instanceof CharacterCard) {
                                             card_pane.setOpacity(1);
-                                            CharacterCard characterCard = (CharacterCard) channel.getSourcePlanController().getCard();
+                                            CharacterCard characterCard = new CharacterCard((CharacterCard) channel.getSourcePlanController().getCard());
                                             this.setSummonedCard(new SummonedCard(characterCard));
                                             this.summonedCard.setEmpty(false);
                                             channel.getSourcePlanController().destroyCard();

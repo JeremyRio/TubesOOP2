@@ -1,7 +1,7 @@
 package com.aetherwars;
 
 import com.aetherwars.controller.AetherWarsController;
-import com.aetherwars.model.folder.GameChannel;
+import com.aetherwars.model.event.GameChannel;
 import com.aetherwars.model.game.*;
 import com.aetherwars.model.game.CardDealer;
 import javafx.application.Application;

@@ -7,6 +7,16 @@ public class CharacterCard extends Card {
   private int healthUp;
   private CharacterType characterType;
 
+
+  public CharacterCard(CharacterCard otherCard){
+    super(otherCard.getID(), otherCard.getName(), otherCard.getDescription(), CardType.CHARACTER, otherCard.getImagePath());
+    this.attack = otherCard.getAttack();
+    this.health = otherCard.getHealth();
+    this.attackUp = otherCard.getAttackUp();
+    this.healthUp = otherCard.getHealthUp();
+    this.characterType = otherCard.getCharacterType();
+  }
+
   public CharacterCard() {
     super();
     this.characterType = CharacterType.OVERWORLD;
