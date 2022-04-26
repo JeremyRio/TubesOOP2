@@ -19,8 +19,8 @@ public class AetherWars extends Application {
 
     try {
       CardDealer cardDealer = new CardDealer();
-      Player player1 = new Player("Steve", cardDealer.getPlayer1Deck());
-      Player player2 = new Player("Alex", cardDealer.getPlayer2Deck());
+      Player player1 = new Player("Steve", cardDealer.getPlayer1Deck(), cardDealer.getPlayer1Deck().size());
+      Player player2 = new Player("Alex", cardDealer.getPlayer2Deck(), cardDealer.getPlayer2Deck().size());
 
       GameChannel gameChannel = new GameChannel();
       FXMLLoader aetherWarsLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/AetherWars.fxml"));
@@ -31,8 +31,6 @@ public class AetherWars extends Application {
 
       AetherWarsController mainController = aetherWarsLoader.getController();
       gameChannel.setMainController(mainController);
-
-
 
       stage.setTitle("Aether Wars");
       stage.setScene(new Scene(root));

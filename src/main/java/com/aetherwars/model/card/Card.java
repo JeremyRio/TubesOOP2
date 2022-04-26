@@ -5,6 +5,7 @@ public abstract class Card {
     protected String name;
     protected String description;
     protected String IMAGE_PATH;
+    protected int mana;
     protected CardType cardType;
 
     public Card(){
@@ -12,11 +13,13 @@ public abstract class Card {
         this.name = "";
         this.description = "";
         this.cardType = CardType.CHARACTER;
+        this.mana = 0;
     }
 
-    public Card(int id, String name, String description, CardType cardType, String IMAGE_PATH) {
+    public Card(int id, String name, int mana, String description, CardType cardType, String IMAGE_PATH) {
         this.id = id;
         this.name = name;
+        this.mana = mana;
         this.description = description;
         this.cardType = cardType;
         this.IMAGE_PATH = IMAGE_PATH;
@@ -35,6 +38,10 @@ public abstract class Card {
     }
 
     public CardType getCardType() { return this.cardType; }
+
+    public int getMana(){
+        return this.mana;
+    }
 
     public String getImagePath() { return this.IMAGE_PATH; }
 

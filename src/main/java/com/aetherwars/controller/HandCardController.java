@@ -21,7 +21,7 @@ import static java.lang.System.out;
 public class HandCardController implements Initializable {
 
     @FXML
-    Text card_type_text;
+    Text card_type_text, mana_text;
 
     @FXML
     ImageView image_card;
@@ -51,15 +51,15 @@ public class HandCardController implements Initializable {
                               if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
                                     destroyCard();
                               }
-                            }else{
+                            }else if(gameChannel.getMainController().getCurrentPlayer().getMana() >= this.card.getMana()){
                                     gameChannel.setSourcePlan(true);
-                                    //                                    gameChannel.getHandCardController().stream().filter(c -> c != this).forEach(
-                                    //                                            controller -> {
-                                    //                                                controller.getCardPane().setStyle("-fx-border-width: 4; -fx-border-color: #3D3107");
-                                    //                                            }
-                                    //                                    );
                                     gameChannel.setSourcePlanController(this);
                                     out.println("Source: " + gameChannel.isSourcePlan());
+                                    // gameChannel.getHandCardController().stream().filter(c -> c != this).forEach(
+                                    //        controller -> {
+                                    //            controller.getCardPane().setStyle("-fx-border-width: 4; -fx-border-color: #3D3107");
+                                    //        }
+                                    // );
                             }
                             break;
                         case END:
@@ -108,6 +108,7 @@ public class HandCardController implements Initializable {
         }else if(card instanceof  SwapSpellCard){
             card_type_text.setText("SWAP");
         }
+        mana_text.setText("MANA " + card.getMana());
             //        switch(card.getCardType()){
             //            case CHARACTER:
             //                card_type_text.setText("CHARACTER");

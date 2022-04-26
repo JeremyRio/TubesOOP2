@@ -9,7 +9,7 @@ public class CharacterCard extends Card {
 
 
   public CharacterCard(CharacterCard otherCard){
-    super(otherCard.getID(), otherCard.getName(), otherCard.getDescription(), CardType.CHARACTER, otherCard.getImagePath());
+    super(otherCard.getID(), otherCard.getName(), otherCard.getMana(), otherCard.getDescription(), CardType.CHARACTER, otherCard.getImagePath());
     this.attack = otherCard.getAttack();
     this.health = otherCard.getHealth();
     this.attackUp = otherCard.getAttackUp();
@@ -22,8 +22,8 @@ public class CharacterCard extends Card {
     this.characterType = CharacterType.OVERWORLD;
   }
 
-  public CharacterCard(int id, String name, String description, String IMAGE_PATH, CharacterType element, int attack, int attackUp, float health, int healthUp) {
-    super(id, name, description, CardType.CHARACTER, IMAGE_PATH);
+  public CharacterCard(int id, String name, int mana, String description, String IMAGE_PATH, CharacterType element, int attack, int attackUp, float health, int healthUp) {
+    super(id, name, mana, description, CardType.CHARACTER, IMAGE_PATH);
     this.characterType = element;
     this.attack = attack;
     this.attackUp = attackUp;

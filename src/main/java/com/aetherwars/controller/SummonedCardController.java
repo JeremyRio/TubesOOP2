@@ -56,6 +56,8 @@ public class SummonedCardController implements Initializable {
                                             channel.getSourcePlanController().destroyCard();
                                             channel.setSourcePlan(false);
                                         }
+                                        channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
+                                        channel.getMainController().updateUIText();
                                     }
                                 }
                                 break;

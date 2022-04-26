@@ -2,7 +2,6 @@ package com.aetherwars.model.card;
 
 public class SpellCard extends Card {
     protected SpellType spellType;
-    protected int mana;
     protected int duration;
 
     public SpellCard(){
@@ -12,14 +11,14 @@ public class SpellCard extends Card {
     }
 
     public SpellCard(int id, String name, String description, String IMAGE_PATH, SpellType spellType, int mana) {
-        super(id, name, description, CardType.SPELL, IMAGE_PATH);
+        super(id, name, mana, description, CardType.SPELL, IMAGE_PATH);
         this.spellType = spellType;
         this.mana = mana;
         this.duration = 0;
     }
 
     public SpellCard(int id, String name, String description, String IMAGE_PATH, SpellType spellType, int mana, int duration) {
-        super(id, name, description, CardType.SPELL, IMAGE_PATH);
+        super(id, name, mana, description, CardType.SPELL, IMAGE_PATH);
         this.spellType = spellType;
         this.mana = mana;
         this.duration = duration;
@@ -27,10 +26,6 @@ public class SpellCard extends Card {
 
     public SpellType getSpellType(){
         return this.spellType;
-    }
-
-    public int getMana(){
-        return this.mana;
     }
 
     public int getDuration(){

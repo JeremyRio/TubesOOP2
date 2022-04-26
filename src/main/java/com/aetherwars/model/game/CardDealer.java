@@ -54,7 +54,7 @@ public class CardDealer {
 
 
         for (String[] row : characterRows) {
-            CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], row[3], row[4],
+            CharacterCard c = new CharacterCard(Integer.parseInt(row[0]), row[1], Integer.parseInt(row[7]), row[3], row[4],
                     CharacterType.valueOf(row[2]), Integer.parseInt(row[5]), Integer.parseInt(row[8]),
                     Integer.parseInt(row[6]), Integer.parseInt(row[9]));
             this.cardMap.put(c.getID(), c);

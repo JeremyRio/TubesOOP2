@@ -29,6 +29,7 @@ public class AetherWarsController implements Initializable {
 
     @FXML
     AnchorPane player1_zone1, player1_zone2, player1_zone3, player1_zone4, player1_zone5;
+
     @FXML
     AnchorPane player2_zone1, player2_zone2, player2_zone3, player2_zone4, player2_zone5;
 
@@ -49,6 +50,9 @@ public class AetherWarsController implements Initializable {
 
     @FXML
     Text player1_health_text, player2_health_text;
+
+    @FXML
+    Text mana_text, deck_text;
 
     private AnchorPane[][] player_board;
     private int current_player = 0;
@@ -83,7 +87,6 @@ public class AetherWarsController implements Initializable {
             game_zone.getChildren().add(drawCardLoader.load());
             drawCardController = drawCardLoader.getController();
 
-
             for(int i = 0; i < 5; i++){
                 FXMLLoader summonedCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/SummonedCard.fxml"));
                 summonedCardLoader.setControllerFactory(c -> new SummonedCardController(channel));
@@ -102,7 +105,7 @@ public class AetherWarsController implements Initializable {
 
             player1_health_text.setText(Integer.toString(playerList[0].getHealth()));
             player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
-
+            updateUIText();
             drawCard();
 
             player1_avatar.setOnMouseClicked(event -> {
@@ -142,6 +145,8 @@ public class AetherWarsController implements Initializable {
                     switch(channel.getPhase()){
                         case DRAW:
                             this.current_player = (this.current_player + 1) % 2;
+                            getCurrentPlayer().resetMana();
+                            updateUIText();
                             drawCard();
                             break;
                         case END:
@@ -149,6 +154,7 @@ public class AetherWarsController implements Initializable {
                                 controller.getSummonedCard().setHasSummoned(false);
                                 controller.getSummonedCard().setHasAttacked(false);
                             });
+                            getCurrentPlayer().increaseMana();
                             break;
                         default:
                             break;
@@ -161,6 +167,11 @@ public class AetherWarsController implements Initializable {
             out.println("Error in AetherWarsController: ");
             e.printStackTrace();
         }
+    }
+
+    public void updateUIText(){
+        mana_text.setText(getCurrentPlayer().getMana() + "/" + getCurrentPlayer().getInitialMana());
+        deck_text.setText(getCurrentPlayer().getDeckSize() + "/" + getCurrentPlayer().getInitialDeckSize());
     }
 
     public void createWinWindow(String player){
@@ -195,6 +206,7 @@ public class AetherWarsController implements Initializable {
         try {
             drawnCard.remove(card);
             getCurrentPlayer().addDeckCard(drawnCard);
+            updateUIText();
             getCurrentPlayer().addHandCard(card);
             List<Card> handCard = getCurrentPlayer().getHandCardList();
             for (Card c : handCard) {

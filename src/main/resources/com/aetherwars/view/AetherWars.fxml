@@ -93,7 +93,7 @@
                         <Font name="Arial" size="14.0" />
                      </font>
                   </Text>
-                  <Text layoutX="6.0" layoutY="36.326171875" strokeType="OUTSIDE" strokeWidth="0.0" text="1/1" textAlignment="CENTER" wrappingWidth="82.0">
+                  <Text fx:id="mana_text" layoutX="6.0" layoutY="36.326171875" strokeType="OUTSIDE" strokeWidth="0.0" text="10/10" textAlignment="CENTER" wrappingWidth="82.0">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
@@ -104,7 +104,7 @@
                         <Font name="Arial" size="14.0" />
                      </font>
                   </Text>
-                  <Text layoutX="121.0" layoutY="36.326171875" strokeType="OUTSIDE" strokeWidth="0.0" text="10/34" textAlignment="CENTER" wrappingWidth="82.0">
+                  <Text fx:id="deck_text" layoutX="121.0" layoutY="36.326171875" strokeType="OUTSIDE" strokeWidth="0.0" text="10/34" textAlignment="CENTER" wrappingWidth="82.0">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>

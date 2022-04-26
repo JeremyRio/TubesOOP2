@@ -12,12 +12,17 @@ public class Player {
     private int mana;
     private List<Card> handCard;
     private List<Card> deckCard;
+    private int initialDeckSize;
+    private int initialMana;
 
-    public Player(String name, List<Card> deckCard){
+
+    public Player(String name, List<Card> deckCard, int initialDeckSize){
         handCard = new ArrayList<>();
         this.name = name;
         this.health = 1;
-        this.mana = 0;
+        this.mana = 1;
+        this.initialMana = 1;
+        this.initialDeckSize = initialDeckSize;
         this.deckCard = deckCard;
     }
 
@@ -59,6 +64,37 @@ public class Player {
         }else{
             this.health -= damage;
         }
+    }
+
+    public void decreaseMana(int mana){
+        this.mana -= mana;
+    }
+
+    public void increaseMana(){
+        if(this.initialMana < 10) {
+            this.initialMana += 1;
+        }
+    }
+
+    public void resetMana(){
+        this.mana = this.initialMana;
+    }
+
+
+    public int getDeckSize(){
+        return this.deckCard.size();
+    }
+
+    public int getInitialDeckSize() {
+        return this.initialDeckSize;
+    }
+
+    public int getInitialMana(){
+        return this.initialMana;
+    }
+
+    public int getMana(){
+        return this.mana;
     }
 
     public void heal(int heal){

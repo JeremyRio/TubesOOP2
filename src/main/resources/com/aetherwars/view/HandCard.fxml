@@ -11,16 +11,21 @@
    <children>
       <Pane maxHeight="250.0" maxWidth="170.0" minHeight="220.0" minWidth="150.0" prefHeight="0.0" prefWidth="0.0">
          <children>
-            <StackPane layoutY="30.0" prefHeight="50.0" prefWidth="150.0">
+            <StackPane layoutY="13.0" prefHeight="100.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="image_card" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="image_card" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../card/image/character/Wither.png" />
+                        <Image url="@../card/image/spell/potion/Deathly%20Magic.png" />
                      </image>
                   </ImageView>
                </children>
             </StackPane>
-            <Text fx:id="card_type_text" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" textAlignment="CENTER" wrappingWidth="150.0">
+            <Text fx:id="mana_text" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" textAlignment="CENTER" wrappingWidth="150.0">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="card_type_text" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Placeholder" textAlignment="CENTER" wrappingWidth="150.0">
                <font>
                   <Font size="21.0" />
                </font>
