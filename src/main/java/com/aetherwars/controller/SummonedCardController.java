@@ -62,29 +62,33 @@ public class SummonedCardController implements Initializable {
                             case ATTACK:
                                 if(!this.summonedCard.isEmpty()) {
                                     if (channel.isSourceAttack() && !channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
-                                        SummonedCardController targetController = channel.getSourceAttackController();
-                                        this.summonedCard.Attack(targetController.getSummonedCard());
+                                        SummonedCardController sourceController = channel.getSourceAttackController();
+                                        this.summonedCard.Attack(sourceController.getSummonedCard());
                                         out.println(this.summonedCard.isDead());
-                                        if(this.summonedCard.isDead() && !targetController.getSummonedCard().isDead()){
+                                        if(this.summonedCard.isDead() && !sourceController.getSummonedCard().isDead()){
                                             this.summonedCard.setEmpty(true);
                                             this.card_pane.setOpacity(0);
-                                            targetController.getSummonedCard().addExp(this.summonedCard.getLevel());
-                                        }else if(targetController.getSummonedCard().isDead() && !this.summonedCard.isDead()){
-                                            targetController.getSummonedCard().setEmpty(true);
-                                            targetController.card_pane.setOpacity(0);
-                                            this.summonedCard.addExp(targetController.getSummonedCard().getLevel());
-                                        }else if (this.summonedCard.isDead() && targetController.getSummonedCard().isDead()){
+                                            sourceController.getSummonedCard().addExp(this.summonedCard.getLevel());
+                                        }else if(sourceController.getSummonedCard().isDead() && !this.summonedCard.isDead()){
+                                            sourceController.getSummonedCard().setEmpty(true);
+                                            sourceController.card_pane.setOpacity(0);
+                                            this.summonedCard.addExp(sourceController.getSummonedCard().getLevel());
+                                        }else if (this.summonedCard.isDead() && sourceController.getSummonedCard().isDead()){
                                             this.summonedCard.setEmpty(true);
                                             this.card_pane.setOpacity(0);
-                                            targetController.getSummonedCard().setEmpty(true);
-                                            targetController.card_pane.setOpacity(0);
+                                            sourceController.getSummonedCard().setEmpty(true);
+                                            sourceController.card_pane.setOpacity(0);
                                         }
                                         this.updateCard();
-                                        targetController.updateCard();
+                                        sourceController.updateCard();
+                                        sourceController.getSummonedCard().setHasAttacked(true);
                                         channel.setSourceAttack(false);
-                                    } else {
-                                        channel.setSourceAttack(true);
-                                        channel.setSourceAttackController(this);
+                                    } else if (channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
+                                        if(!this.summonedCard.hasSummoned() && !this.summonedCard.hasAttacked()) {
+                                            out.println("PASS ATTACK MODE");
+                                            channel.setSourceAttack(true);
+                                            channel.setSourceAttackController(this);
+                                        }
                                     }
                                 }
                                 break;

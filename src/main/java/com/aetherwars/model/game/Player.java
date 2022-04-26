@@ -16,7 +16,7 @@ public class Player {
     public Player(String name, List<Card> deckCard){
         handCard = new ArrayList<>();
         this.name = name;
-        this.health = 80;
+        this.health = 1;
         this.mana = 0;
         this.deckCard = deckCard;
     }
@@ -49,16 +49,20 @@ public class Player {
         return handCard;
     }
 
-    public void discard(Card card){
-        handCard.remove(card);
+    public int getHealth(){
+        return health;
     }
 
     public void takeDamage(int damage){
-        health -= damage;
+        if(damage > health) {
+            this.health = 0;
+        }else{
+            this.health -= damage;
+        }
     }
 
     public void heal(int heal){
-        health += heal;
+        this.health += heal;
     }
 
     public void setMana(int mana){

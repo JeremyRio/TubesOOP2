@@ -16,6 +16,8 @@ import javafx.fxml.FXML;
 
 
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,9 @@ public class AetherWarsController implements Initializable {
 
     @FXML
     HBox hand_card_box;
+
+    @FXML
+    Text player1_health_text, player2_health_text;
 
     private AnchorPane[][] player_board;
     private int current_player = 0;
@@ -75,10 +80,8 @@ public class AetherWarsController implements Initializable {
 
             FXMLLoader drawCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/DrawCard.fxml"));
             drawCardLoader.setControllerFactory(c -> new DrawCardController(channel));
-            drawCardPane = drawCardLoader.load();
+            game_zone.getChildren().add(drawCardLoader.load());
             drawCardController = drawCardLoader.getController();
-            out.println("PASS");
-            game_zone.getChildren().add(drawCardPane);
 
 
             for(int i = 0; i < 5; i++){
@@ -97,20 +100,39 @@ public class AetherWarsController implements Initializable {
                 player_board[1][i].getChildren().add(summonedPane);
             }
 
+            player1_health_text.setText(Integer.toString(playerList[0].getHealth()));
+            player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
+
             drawCard();
 
             player1_avatar.setOnMouseClicked(event -> {
-                try {
-                    if(event.getButton() == MouseButton.PRIMARY){
-                        if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(0)) && channel.isSourceAttack()){
-                            getCurrentPlayer().takeDamage(channel.getSourceAttackController().getSummonedCard().getTotalAttack());
+                if(event.getButton() == MouseButton.PRIMARY){
+                    if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(0)) && channel.isSourceAttack() && !channel.getSummonedController(0).contains(channel.getSourceAttackController())){
+                        playerList[0].takeDamage(channel.getSourceAttackController().getSummonedCard().getTotalAttack());
+                        channel.getSourceAttackController().getSummonedCard().setHasAttacked(true);
+                        channel.setSourceAttack(false);
+                        player1_health_text.setText(Integer.toString(playerList[0].getHealth()));
+                        if(playerList[0].getHealth() == 0){
+                            createWinWindow("PLAYER 2");
                         }
                     }
-                }catch (Exception e){
-                    out.println("Error in Player1Avatar: " + e);
-                    e.printStackTrace();
                 }
             });
+
+            player2_avatar.setOnMouseClicked(event -> {
+                if(event.getButton() == MouseButton.PRIMARY){
+                    if(channel.getPhase() == Phase.ATTACK && this.isSummonedZoneEmpty(channel.getSummonedController(1)) && channel.isSourceAttack() && !channel.getSummonedController(1).contains(channel.getSourceAttackController())){
+                        playerList[1].takeDamage(channel.getSourceAttackController().getSummonedCard().getTotalAttack());
+                        channel.getSourceAttackController().getSummonedCard().setHasAttacked(true);
+                        channel.setSourceAttack(false);
+                        player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
+                        if(playerList[1].getHealth() == 0){
+                            createWinWindow("PLAYER 1");
+                        }
+                    }
+                }
+            });
+
 
             phase_button.setOnAction(e -> {
                 if(channel.getPhase() == Phase.END && getCurrentPlayer().getHandCardList().size() == 5){
@@ -122,6 +144,12 @@ public class AetherWarsController implements Initializable {
                             this.current_player = (this.current_player + 1) % 2;
                             drawCard();
                             break;
+                        case END:
+                            channel.getSummonedController(current_player).forEach(controller -> {
+                                controller.getSummonedCard().setHasSummoned(false);
+                                controller.getSummonedCard().setHasAttacked(false);
+                            });
+                            break;
                         default:
                             break;
                         }
@@ -131,6 +159,17 @@ public class AetherWarsController implements Initializable {
         }
         catch (Exception e) {
             out.println("Error in AetherWarsController: ");
+            e.printStackTrace();
+        }
+    }
+
+    public void createWinWindow(String player){
+        try {
+            FXMLLoader winWindowLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/WinWindow.fxml"));
+            winWindowLoader.setControllerFactory(c -> new WinWindowController(player));
+            game_zone.getChildren().add(winWindowLoader.load());
+        }catch (Exception e){
+            out.println("Error in CreateWinWindow: " + e);
             e.printStackTrace();
         }
     }

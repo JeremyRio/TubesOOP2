@@ -32,7 +32,7 @@ public class SummonedCard {
         this.bonusAttack = 0;
         this.bonusHealth = 0.0f;
         this.activeSpells = new ArrayList<>();
-        this.hasSummoned = false;
+        this.hasSummoned = true;
         this.hasAttacked = false;
         this.summonedHealth = character.getHealth();
         this.isEmpty = true;
