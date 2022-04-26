@@ -107,6 +107,8 @@ public class HandCardController implements Initializable {
             card_type_text.setText("MORPH");
         }else if(card instanceof  SwapSpellCard){
             card_type_text.setText("SWAP");
+        }else if(card instanceof  LevelSpellCard){
+            card_type_text.setText("LEVEL");
         }
         mana_text.setText("MANA " + card.getMana());
             //        switch(card.getCardType()){
