@@ -46,6 +46,7 @@ public class HandCardController implements Initializable {
                             gameChannel.getMainController().addDeckCard(card);
                             break;
                         case PLAN:
+                            out.println("PASS PLAN PHASE");
                             if(event.getClickCount() == 2){
                               if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
                                     destroyCard();

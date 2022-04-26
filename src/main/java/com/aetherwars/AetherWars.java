@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import static java.lang.System.out;
+
 public class AetherWars extends Application {
 
   @Override
@@ -22,8 +24,10 @@ public class AetherWars extends Application {
 
       GameChannel gameChannel = new GameChannel();
       FXMLLoader aetherWarsLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/AetherWars.fxml"));
+      out.println("PASS MAIN");
       aetherWarsLoader.setControllerFactory(c -> new AetherWarsController(player1, player2, gameChannel));
       Parent root = aetherWarsLoader.load();
+      out.println("END MAIN");
 
       AetherWarsController mainController = aetherWarsLoader.getController();
       gameChannel.setMainController(mainController);
@@ -36,7 +40,7 @@ public class AetherWars extends Application {
       stage.show();
     }
     catch (Exception e) {
-      System.out.println("Error in AetherWars: ");
+      out.println("Error in AetherWars: ");
       e.printStackTrace();
     }
   }

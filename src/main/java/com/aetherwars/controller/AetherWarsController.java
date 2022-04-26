@@ -34,7 +34,7 @@ public class AetherWarsController implements Initializable {
     ImageView player1_avatar, player2_avatar;
 
     @FXML
-    AnchorPane game_zone;
+    StackPane game_zone;
 
     @FXML
     Button phase_button;
@@ -54,7 +54,6 @@ public class AetherWarsController implements Initializable {
     private Rectangle[] phase_rectangle;
     private Phase[] phase = new Phase[] {Phase.DRAW, Phase.PLAN, Phase.ATTACK, Phase.END};
     private DrawCardController drawCardController;
-    private StackPane drawCardPane;
     private List<Card> drawnCard;
 
     public AetherWarsController(Player player1, Player player2, GameChannel channel){
@@ -78,6 +77,7 @@ public class AetherWarsController implements Initializable {
             drawCardLoader.setControllerFactory(c -> new DrawCardController(channel));
             drawCardPane = drawCardLoader.load();
             drawCardController = drawCardLoader.getController();
+            out.println("PASS");
             game_zone.getChildren().add(drawCardPane);
 
 
