@@ -123,9 +123,15 @@ public class SummonedCardController implements Initializable {
         image_card.setImage(image);
         health_text.setText(String.valueOf(this.summonedCard.getTotalHealth()));
         attack_text.setText(String.valueOf(this.summonedCard.getTotalAttack()));
-        level_exp_text.setText(this.summonedCard.getExp() + "/"
-                + this.summonedCard.getExpToNextLevel() + " ["
-                + this.summonedCard.getLevel() + "]");
+        if(summonedCard.getLevel() < 10) {
+            level_exp_text.setText(this.summonedCard.getExp() + "/"
+                    + this.summonedCard.getExpToNextLevel() + " ["
+                    + this.summonedCard.getLevel() + "]");
+        }
+        else{
+            level_exp_text.setText("MAX ["
+                    + this.summonedCard.getLevel() + "]");
+        }
     }
 
 }

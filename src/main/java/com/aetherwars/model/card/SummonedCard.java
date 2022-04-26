@@ -189,12 +189,14 @@ public class SummonedCard {
     }
 
     public void levelUp(){
-        if (this.exp >= getExpToNextLevel()) {
-            this.exp -= getExpToNextLevel();
-            this.level++;
-            this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
-            this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
-            this.setSummonedHealth(this.character.getHealth());
+        if(this.level < 10) {
+            if (this.exp >= getExpToNextLevel()) {
+                this.exp -= getExpToNextLevel();
+                this.level++;
+                this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
+                this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
+                this.setSummonedHealth(this.character.getHealth());
+            }
         }
     }
 
