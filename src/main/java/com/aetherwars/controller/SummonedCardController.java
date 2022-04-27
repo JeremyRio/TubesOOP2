@@ -45,6 +45,17 @@ public class SummonedCardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         summonedCard = new SummonedCard();
         this.card_pane.setOpacity(0);
+
+        this.card_pane.setOnMouseEntered(event -> {
+            if(!this.summonedCard.isEmpty()) {
+                channel.getMainController().setSummonedDescription(this.summonedCard);
+            }
+        });
+
+        this.card_pane.setOnMouseExited(event -> {
+            channel.getMainController().resetDescription();
+        });
+
         this.card_pane.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         switch(channel.getPhase()) {
@@ -152,5 +163,6 @@ public class SummonedCardController implements Initializable {
         this.summonedCard.addActiveSpell(summonedCard);
         updateCard();
     }
+
 
 }

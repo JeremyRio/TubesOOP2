@@ -30,6 +30,8 @@ public class HandCardController implements Initializable {
     @FXML
     StackPane card_pane;
 
+
+
     private GameChannel gameChannel;
 
 
@@ -39,6 +41,15 @@ public class HandCardController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
         try {
+
+            card_pane.setOnMouseEntered(event -> {
+                    gameChannel.getMainController().setDescription(this.card);
+            });
+
+            card_pane.setOnMouseExited(event -> {
+                gameChannel.getMainController().resetDescription();
+            });
+
             card_pane.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     switch (gameChannel.getPhase()) {
@@ -111,24 +122,6 @@ public class HandCardController implements Initializable {
             card_type_text.setText("LEVEL");
         }
         mana_text.setText("MANA " + card.getMana());
-            //        switch(card.getCardType()){
-            //            case CHARACTER:
-            //                card_type_text.setText("CHARACTER");
-            //                break;
-            //            default:
-            //                SpellCard spellCard = (SpellCard) card;
-            //                switch(spellCard.getSpellType()){
-            //                    case PTN:
-            //                        card_type_text.setText("POTION");
-            //                        break;
-            //                    case MORPH:
-            //                        card_type_text.setText("MORPH");
-            //                        break;
-            //                    case SWAP:
-            //                        card_type_text.setText("SWAP");
-            //                        break;
-            //                }
-            //        }
     }
 
     public StackPane getCardPane(){

@@ -22,7 +22,7 @@ public class AetherWars extends Application {
       Player player1 = new Player("Steve", cardDealer.getPlayer1Deck(), cardDealer.getPlayer1Deck().size());
       Player player2 = new Player("Alex", cardDealer.getPlayer2Deck(), cardDealer.getPlayer2Deck().size());
 
-      GameChannel gameChannel = new GameChannel();
+      GameChannel gameChannel = new GameChannel(cardDealer);
       FXMLLoader aetherWarsLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/AetherWars.fxml"));
       out.println("PASS MAIN");
       aetherWarsLoader.setControllerFactory(c -> new AetherWarsController(player1, player2, gameChannel));

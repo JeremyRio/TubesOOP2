@@ -1,14 +1,18 @@
 package com.aetherwars.controller;
 
-import com.aetherwars.model.card.Card;
+import com.aetherwars.model.card.*;
 import com.aetherwars.model.event.GameChannel;
 import com.aetherwars.model.game.Phase;
 import com.aetherwars.model.game.Player;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
@@ -18,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,15 @@ public class AetherWarsController implements Initializable {
 
     @FXML
     Text mana_text, deck_text;
+
+    @FXML
+    Label description_label, stats_label, card_name_label, attack_bonus_label, hp_bonus_label;
+
+    @FXML
+    ImageView description_image;
+
+    @FXML
+    Pane description_pane;
 
     private AnchorPane[][] player_board;
     private int current_player = 0;
@@ -107,6 +121,7 @@ public class AetherWarsController implements Initializable {
             player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
             updateUIText();
             drawCard();
+            resetDescription();
 
             player1_avatar.setOnMouseClicked(event -> {
                 if(event.getButton() == MouseButton.PRIMARY){
@@ -135,7 +150,6 @@ public class AetherWarsController implements Initializable {
                     }
                 }
             });
-
 
             phase_button.setOnAction(e -> {
                 if(channel.getPhase() == Phase.END && getCurrentPlayer().getHandCardList().size() == 5){
@@ -225,6 +239,95 @@ public class AetherWarsController implements Initializable {
             out.println("Error in addDeckCard: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void resetDescription(){
+        description_pane.setOpacity(0);
+        hp_bonus_label.setText("");
+        attack_bonus_label.setText("");
+        description_label.setText("");
+        card_name_label.setText("");
+        stats_label.setText("");
+        description_image.setImage(null);
+    }
+
+    public void setSummonedDescription(SummonedCard summonedCard){
+        File file = null;
+        try {
+            file = new File(getClass().getResource("../" + summonedCard.getImagePath()).toURI());
+        }
+        catch (Exception e) {
+            out.println("Error loading image: " + e);
+        };
+        description_pane.setOpacity(1);
+        description_image.setImage(new Image(file.toURI().toString()));
+        description_label.setText(summonedCard.getCharacterCard().getDescription());
+        card_name_label.setText(summonedCard.getCharacterCard().getName());
+        if(summonedCard.getBonusAttack() > 0){
+            attack_bonus_label.setStyle("-fx-text-fill: green");
+            attack_bonus_label.setStyle("(+" + summonedCard.getBonusAttack() + ")");
+        }else if (summonedCard.getBonusAttack() < 0){
+            attack_bonus_label.setStyle("-fx-text-fill: red");
+            attack_bonus_label.setStyle("(-" + summonedCard.getBonusAttack() + ")");
+        }
+        if(summonedCard.getBonusHealth() > 0){
+            hp_bonus_label.setStyle("-fx-text-fill: green");
+            hp_bonus_label.setStyle("(+" + summonedCard.getBonusHealth() + ")");
+        }else if (summonedCard.getBonusAttack() < 0){
+            hp_bonus_label.setStyle("-fx-text-fill: red");
+            hp_bonus_label.setStyle("(-" + summonedCard.getBonusHealth() + ")");
+        }
+        stats_label.setText(
+                "    ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
+                "     HP: " + summonedCard.getCharacterCard().getHealth() + "\n" +
+                "    LVL: " + summonedCard.getLevel() + "\n\n" +
+                        (summonedCard.getActiveSpells().size() > 0 ? "ACTIVE_SPELL: " + "\n" + summonedCard.toString() : "")
+        );
+    }
+
+    public void setDescription(Card card){
+        File file = null;
+        try {
+            file = new File(getClass().getResource("../" + card.getImagePath()).toURI());
+        }
+        catch (Exception e) {
+            out.println("Error loading image: " + e);
+        };
+        description_pane.setOpacity(1);
+        description_image.setImage(new Image(file.toURI().toString()));
+        description_label.setText(card.getDescription());
+        card_name_label.setText(card.getName());
+        stats_label.setText(getStatusCard(card));
+    }
+
+    public String getStatusCard(Card card){
+        String message = null;
+        if(card instanceof CharacterCard){
+            CharacterCard castCard = (CharacterCard) card;
+            message  =
+            "    ATK: " + castCard.getAttack() + "\n" +
+            "     HP: " + castCard.getHealth() + "\n" +
+            " ATK_UP: " + castCard.getAttackUp() + "\n" +
+            "  HP_UP: " + castCard.getHealthUp();
+        }
+        else if (card instanceof MorphSpellCard){
+            MorphSpellCard castCard = (MorphSpellCard) card;
+            message  =
+            "TURN_INTO: " + (channel.getCardFromMap(castCard.getTargetID())).getName();
+        }
+        else if (card instanceof PotionSpellCard){
+            PotionSpellCard castCard = (PotionSpellCard) card;
+            message =
+            "     ATK: " + castCard.getAttack() + "\n" +
+            "      HP: " + castCard.getHP() + "\n" +
+            "DURATION: " + (castCard.getDuration() == 0 ? "PERMANENT" : castCard.getDuration());
+        }
+        else if (card instanceof  SwapSpellCard){
+            SwapSpellCard castCard = (SwapSpellCard) card;
+            message =
+            "DURATION: " + (castCard.getDuration() == 0 ? "PERMANENT" : castCard.getDuration());
+        }
+        return message;
     }
 
     public HBox getHandCardBox(){

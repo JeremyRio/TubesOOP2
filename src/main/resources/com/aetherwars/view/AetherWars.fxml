@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,7 +17,7 @@
    <children>
       <Pane maxHeight="650.0" maxWidth="1200.0" minHeight="650.0" minWidth="1200.0" prefHeight="650.0" prefWidth="1200.0">
          <children>
-            <Pane layoutX="217.0" layoutY="313.0" prefHeight="24.0" prefWidth="596.0">
+            <Pane layoutX="270.0" layoutY="313.0" prefHeight="24.0" prefWidth="596.0">
                <children>
                   <Rectangle fx:id="draw" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
                   <Rectangle fx:id="plan" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" layoutX="149.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
@@ -44,7 +45,7 @@
                   </Text>
                </children>
             </Pane>
-            <Button fx:id="phase_button" layoutX="824.0" layoutY="310.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="&gt;&gt;" textAlignment="CENTER" />
+            <Button fx:id="phase_button" layoutX="878.0" layoutY="310.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="&gt;&gt;" textAlignment="CENTER" />
             <Pane layoutX="20.0" layoutY="64.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="101.0" layoutX="80.0" stroke="BLACK" strokeType="INSIDE" width="101.0" />
@@ -65,6 +66,148 @@
                   <Text fx:id="player1_health_text" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0" />
                </children>
             </Pane>
+            <HBox fx:id="hand_card_box" layoutX="24.0" layoutY="410.0" prefHeight="207.0" prefWidth="642.0" spacing="5.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <StackPane fx:id="card_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" style="-fx-border-width: 4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff;">
+                     <children>
+                        <Pane maxHeight="200.0" maxWidth="120.0" minHeight="200.0" minWidth="120.0" prefHeight="200.0" prefWidth="120.0">
+                           <children>
+                              <StackPane layoutY="14.0" prefHeight="120.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fx:id="image_card" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card/image/character/Skeleton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Text fx:id="mana_text1" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANA 5" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="card_type_text" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MORPH" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Lucida Console" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="card_pane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" style="-fx-border-width: 4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff;">
+                     <children>
+                        <Pane maxHeight="200.0" maxWidth="120.0" minHeight="200.0" minWidth="120.0" prefHeight="200.0" prefWidth="120.0">
+                           <children>
+                              <StackPane layoutY="14.0" prefHeight="120.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fx:id="image_card1" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card/image/character/Skeleton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Text fx:id="mana_text2" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANA 5" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="card_type_text1" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MORPH" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Lucida Console" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="card_pane2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" style="-fx-border-width: 4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff;">
+                     <children>
+                        <Pane maxHeight="200.0" maxWidth="120.0" minHeight="200.0" minWidth="120.0" prefHeight="200.0" prefWidth="120.0">
+                           <children>
+                              <StackPane layoutY="14.0" prefHeight="120.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fx:id="image_card2" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card/image/character/Skeleton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Text fx:id="mana_text3" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANA 5" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="card_type_text2" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MORPH" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Lucida Console" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="card_pane3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" style="-fx-border-width: 4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff;">
+                     <children>
+                        <Pane maxHeight="200.0" maxWidth="120.0" minHeight="200.0" minWidth="120.0" prefHeight="200.0" prefWidth="120.0">
+                           <children>
+                              <StackPane layoutY="14.0" prefHeight="120.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fx:id="image_card3" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card/image/character/Skeleton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Text fx:id="mana_text4" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANA 5" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="card_type_text3" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MORPH" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Lucida Console" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="card_pane4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" style="-fx-border-width: 4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff;">
+                     <children>
+                        <Pane maxHeight="200.0" maxWidth="120.0" minHeight="200.0" minWidth="120.0" prefHeight="200.0" prefWidth="120.0">
+                           <children>
+                              <StackPane layoutY="14.0" prefHeight="120.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fx:id="image_card4" fitHeight="120.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../card/image/character/Skeleton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Text fx:id="mana_text5" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MANA 5" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Segoe UI Bold" size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="card_type_text4" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MORPH" textAlignment="CENTER" wrappingWidth="120.0">
+                                 <font>
+                                    <Font name="Lucida Console" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
             <Pane layoutX="779.0" layoutY="64.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="101.0" layoutX="110.0" stroke="BLACK" strokeType="INSIDE" width="101.0" />
@@ -85,7 +228,7 @@
                   <AnchorPane fx:id="player2_zone3" layoutX="220.0" layoutY="106.0" prefHeight="101.0" prefWidth="101.0" />
                </children>
             </Pane>
-            <AnchorPane layoutX="24.0" layoutY="361.0">
+            <AnchorPane layoutX="30.0" layoutY="361.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="44.0" stroke="BLACK" strokeType="INSIDE" width="95.0" />
                   <Text layoutX="29.0" layoutY="17.326171875" strokeType="OUTSIDE" strokeWidth="0.0" text="Mana">
@@ -111,11 +254,62 @@
                   </Text>
                </children>
             </AnchorPane>
-            <HBox fx:id="hand_card_box" layoutX="24.0" layoutY="410.0" prefHeight="230.0" prefWidth="818.0" spacing="5.0">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
+            <Pane fx:id="description_pane" layoutX="659.0" layoutY="362.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="267.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="534.0" />
+                  <Pane layoutX="143.0" layoutY="52.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="175.0" />
+                        <Label fx:id="stats_label" alignment="TOP_LEFT" layoutX="9.0" layoutY="9.0" prefHeight="179.0" prefWidth="160.0" text="AAAAAAAAA" wrapText="true">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <font>
+                              <Font name="Courier New" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="attack_bonus_label" layoutX="119.0" layoutY="14.0" style="-fx-text-fill: green;" text="(+5)">
+                           <font>
+                              <Font name="Courier New" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="hp_bonus_label" layoutX="119.0" layoutY="29.0" style="-fx-text-fill: red;" text="(+20)">
+                           <font>
+                              <Font name="Courier New" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="325.0" layoutY="52.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="196.0" />
+                        <Label fx:id="description_label" alignment="TOP_LEFT" layoutX="7.0" layoutY="9.0" prefHeight="179.0" prefWidth="175.0" wrapText="true">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Italic" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label fx:id="card_name_label" alignment="CENTER" layoutX="2.0" layoutY="13.0" prefHeight="35.0" prefWidth="528.0" text="Placeholder" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <StackPane layoutX="8.0" layoutY="56.0" prefHeight="161.0" prefWidth="125.0">
+                     <children>
+                        <ImageView fx:id="description_image" fitHeight="180.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../card/image/spell/potion/Deathly%20Magic.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+               </children>
+            </Pane>
+            <Pane layoutX="558.0" layoutY="68.0" />
          </children>
       </Pane>
    </children>

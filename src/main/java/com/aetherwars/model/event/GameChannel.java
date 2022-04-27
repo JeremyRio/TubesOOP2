@@ -3,6 +3,8 @@ package com.aetherwars.model.event;
 import com.aetherwars.controller.AetherWarsController;
 import com.aetherwars.controller.HandCardController;
 import com.aetherwars.controller.SummonedCardController;
+import com.aetherwars.model.card.Card;
+import com.aetherwars.model.game.CardDealer;
 import com.aetherwars.model.game.Phase;
 
 import java.util.ArrayList;
@@ -22,8 +24,10 @@ public class GameChannel {
     private HandCardController sourcePlanController;
     private SummonedCardController targetPlanController;
     private SummonedCardController sourceAttackController;
+    private CardDealer cardDealer;
 
-    public GameChannel(){
+    public GameChannel(CardDealer cardDealer){
+        this.cardDealer = cardDealer;
         player1_summonedController = new ArrayList<>();
         player2_summonedController = new ArrayList<>();
         cardOnHandController = new ArrayList<>();
@@ -59,6 +63,10 @@ public class GameChannel {
             default:
                 return player2_summonedController;
         }
+    }
+
+    public Card getCardFromMap(int targetID){
+        return this.cardDealer.getCardFromMap(targetID);
     }
 
     public boolean isSourceAttack(){

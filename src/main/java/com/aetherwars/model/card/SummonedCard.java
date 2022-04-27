@@ -6,6 +6,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -85,6 +86,10 @@ public class SummonedCard {
         return this.summonedHealth + this.bonusHealth;
     }
 
+    public int getBonusAttack(){
+        return this.bonusAttack;
+    }
+
     public void setBonusAttack(int bonusAttack) {
         this.bonusAttack = bonusAttack;
     }
@@ -108,6 +113,10 @@ public class SummonedCard {
 
     public void setAttack(int attack){
         this.character.setAttack(attack);
+    }
+
+    public List<SpellCard> getActiveSpells(){
+        return this.activeSpells;
     }
 
     public float getAttackModifier(SummonedCard target){
@@ -328,5 +337,9 @@ public class SummonedCard {
         }
         this.setSummonedHealth(this.character.getHealth());
     }
-        
+
+    @Override
+    public String toString() {
+        return this.activeSpells.stream().map(c -> c.getName()).collect(Collectors.joining(","));
+    }
 }

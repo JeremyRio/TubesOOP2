@@ -98,6 +98,10 @@ public class CardDealer {
 
     }
 
+    public Card getCardFromMap(int targetID){
+        return this.cardMap.get(targetID);
+    }
+
     public List<Card> getPlayer1Deck(){
         return deck1;
     }
