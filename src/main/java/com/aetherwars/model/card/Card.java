@@ -43,6 +43,10 @@ public abstract class Card {
         return this.mana;
     }
 
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
     public String getImagePath() { return this.IMAGE_PATH; }
 
     @Override

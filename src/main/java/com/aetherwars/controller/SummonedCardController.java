@@ -50,12 +50,12 @@ public class SummonedCardController implements Initializable {
                         switch(channel.getPhase()) {
                             case PLAN:
                                 if(this.summonedCard.isEmpty()) {
+
                                     if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         if (channel.getSourcePlanController().getCard() instanceof CharacterCard) {
                                             card_pane.setOpacity(1);
                                             CharacterCard characterCard = new CharacterCard((CharacterCard) channel.getSourcePlanController().getCard());
                                             this.setSummonedCard(new SummonedCard(characterCard));
-                                            this.summonedCard.setEmpty(false);
                                             channel.getSourcePlanController().destroyCard();
                                             channel.setSourcePlan(false);
                                         }
@@ -63,21 +63,16 @@ public class SummonedCardController implements Initializable {
                                         channel.getMainController().updateUIText();
                                     }
                                 }
-                                // else {
-                                //     if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
-                                //         System.out.println(this.summonedCard.getClass());
-                                //         if (channel.getSourcePlanController().getCard() instanceof PotionSpellCard){
-                                //             updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
-                                //             channel.getSourcePlanController().destroyCard();
-                                //             channel.setSourcePlan(false);
-                                //         }
-                                //         else if (channel.getSourcePlanController().getCard() instanceof SwapSpellCard){
-                                //             updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
-                                //             channel.getSourcePlanController().destroyCard();
-                                //             channel.setSourcePlan(false);
-                                //         }
-                                //     }
-                                // }
+                                else {
+                                    // if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
+                                    //     System.out.println(this.summonedCard.getClass());
+                                    //     updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
+                                    //     channel.getSourcePlanController().destroyCard();
+                                    //     channel.setSourcePlan(false);
+                                    //     channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
+                                    //     channel.getMainController().updateUIText();
+                                    // }
+                                }
                                 break;
                             case ATTACK:
                                 if(!this.summonedCard.isEmpty()) {
@@ -130,6 +125,7 @@ public class SummonedCardController implements Initializable {
     }
 
     public void updateCard() {
+        if (this.summonedCard.isEmpty()) {System.out.println("masuk"); return;}
         File file = null;
         try {
             file = new File(getClass().getResource("../" + this.summonedCard.getImagePath()).toURI());
@@ -154,8 +150,7 @@ public class SummonedCardController implements Initializable {
 
     public void updateSpellCard(SpellCard summonedCard) {
         this.summonedCard.addActiveSpell(summonedCard);
-        health_text.setText(String.valueOf(this.summonedCard.getTotalHealth()));
-        attack_text.setText(String.valueOf(this.summonedCard.getTotalAttack()));
+        updateCard();
     }
 
 }

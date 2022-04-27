@@ -1,5 +1,5 @@
 package com.aetherwars.model.card;
-
+import java.lang.Math;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
@@ -36,7 +36,7 @@ public class SummonedCard {
         this.hasSummoned = true;
         this.hasAttacked = false;
         this.summonedHealth = character.getHealth();
-        this.isEmpty = true;
+        this.isEmpty = false;
         this.swapActivated = false;
     }
 
@@ -224,16 +224,32 @@ public class SummonedCard {
         if (other.getDuration() != 0 && !swapActivated){
             this.activeSpells.add(other);
         }
+        System.out.println("durations potion 1: " + other.getDuration());
         if (other instanceof PotionSpellCard) {
             PotionSpellCard temp = (PotionSpellCard) other;
+            System.out.println("duration potion: " + other.getDuration());
             this.bonusAttack += temp.getAttack();
             this.bonusHealth += temp.getHP();
         }
-        // else if (other instanceof LevelSpellCard){
-        //     // TODO
-        // }
+        else if (other instanceof LevelSpellCard){
+            LevelSpellCard temp = (LevelSpellCard) other;
+            if ((this.level + temp.getLevelup() > 0) && (this.level + temp.getLevelup() <= 10)) {
+                temp.setMana((int) Math.ceil((float)getLevel()/2));
+                leveling(temp.getLevelup());
+            }
+        }
         else if (other instanceof MorphSpellCard){
-            // TODO
+            MorphSpellCard temp = (MorphSpellCard) other;
+            this.character = temp.getMorphedCharacter();
+            this.exp = 0;
+            this.level = 1;
+            this.bonusAttack = 0;
+            this.bonusHealth = 0.0f;
+            this.activeSpells = new ArrayList<>();
+            this.hasSummoned = true;
+            this.hasAttacked = false;
+            this.summonedHealth = character.getHealth();
+            this.swapActivated = false;
         }
         else if (other instanceof SwapSpellCard) {
             if (swapActivated) {
@@ -253,12 +269,17 @@ public class SummonedCard {
 
     // Mengurangi durasi pada list activeSpell
     public void updateDuration() {
-        for (SpellCard activeSpell: activeSpells) {
-            activeSpell.decreaseDuration();
-            if (activeSpell.getDuration() == 0) {
-                revertSpell(activeSpell);
-                activeSpells.remove(activeSpell);
+        if (this.activeSpells == null) {
+            return;
+        }
+        else if (!this.activeSpells.isEmpty()){
+            for (SpellCard activeSpell: activeSpells) {
+                activeSpell.decreaseDuration();
+                if (activeSpell.getDuration() == 0) {
+                    revertSpell(activeSpell);
+                }
             }
+            activeSpells.removeIf(a -> a.getDuration() == 0);
         }
     }
 
@@ -268,12 +289,6 @@ public class SummonedCard {
             PotionSpellCard temp = (PotionSpellCard) other;
             this.bonusHealth -=  temp.getHP();
             this.bonusAttack -= temp.getAttack();
-        }
-        // else if (other instanceof LevelSpellCard){
-        //     // TODO
-        // }
-        else if (other instanceof MorphSpellCard){
-            // TODO
         }
         else if (other instanceof SwapSpellCard) {
             int tempAttack = this.character.getAttack();
@@ -299,4 +314,19 @@ public class SummonedCard {
     public void clearActiveSpells() {
         this.activeSpells.clear();
     }
+
+    public void leveling(int up) {
+        if (up == 1) {
+            this.level++;
+            this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
+            this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
+        }
+        else {
+            this.level--;
+            this.character.setAttack(this.character.getAttack() - this.character.getAttackUp());
+            this.character.setHealth(this.character.getHealth() - (float) this.character.getHealthUp());
+        }
+        this.setSummonedHealth(this.character.getHealth());
+    }
+        
 }

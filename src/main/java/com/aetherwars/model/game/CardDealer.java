@@ -65,7 +65,7 @@ public class CardDealer {
 
         for (String[] row : morphRows) {
             MorphSpellCard m = new MorphSpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3],
-                    Integer.parseInt(row[5]), Integer.parseInt(row[4]));
+                    Integer.parseInt(row[5]), Integer.parseInt(row[4]), cardMap.get(Integer.parseInt(row[4])));
             this.cardMap.put(m.getID(), m);
 
         }

@@ -36,8 +36,11 @@ public class SpellCard extends Card {
         this.duration--;
     }
 
-    
     public void setDuration(int duration){
         this.duration = duration;
+    }
+
+    public void setMana(int mana) {
+        super.setMana(mana);
     }
 }
