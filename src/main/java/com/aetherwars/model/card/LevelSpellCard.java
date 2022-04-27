@@ -10,6 +10,7 @@ public class LevelSpellCard extends SpellCard {
     public LevelSpellCard(LevelSpellCard other){
         super(other.id, other.name, other.description, other.IMAGE_PATH, SpellType.LVL, other.mana);
         this.level = other.level;
+        this.duration = other.duration;
     } 
     
     public int getLevelup(){

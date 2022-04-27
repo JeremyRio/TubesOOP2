@@ -1,7 +1,7 @@
 package com.aetherwars.model.card;
 
 public class PotionSpellCard extends SpellCard {
-    private int hp;
+    private float hp;
     private int attack;
     public PotionSpellCard(int id, String name, String description, String IMAGE_PATH, int mana, int duration, int hp, int attack) {
         super(id, name, description, IMAGE_PATH, SpellType.PTN, mana, duration);
@@ -15,11 +15,21 @@ public class PotionSpellCard extends SpellCard {
         this.attack = other.getAttack();
     }
 
-    public int getHP(){
+    public float getHP(){
         return hp;
+    }
+
+    public void setHP(float hp){
+        this.hp = hp;
     }
 
     public int getAttack(){
         return attack;
     }
+
+    public void setAttack(int attack){
+        this.attack = attack;
+    }
+
+
 }

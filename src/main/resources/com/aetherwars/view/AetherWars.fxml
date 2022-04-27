@@ -257,42 +257,34 @@
             <Pane fx:id="description_pane" layoutX="659.0" layoutY="362.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="267.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="534.0" />
-                  <Pane layoutX="143.0" layoutY="52.0">
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="175.0" />
-                        <Label fx:id="stats_label" alignment="TOP_LEFT" layoutX="9.0" layoutY="9.0" prefHeight="179.0" prefWidth="160.0" text="AAAAAAAAA" wrapText="true">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <font>
-                              <Font name="Courier New" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="attack_bonus_label" layoutX="119.0" layoutY="14.0" style="-fx-text-fill: green;" text="(+5)">
-                           <font>
-                              <Font name="Courier New" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="hp_bonus_label" layoutX="119.0" layoutY="29.0" style="-fx-text-fill: red;" text="(+20)">
-                           <font>
-                              <Font name="Courier New" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane layoutX="325.0" layoutY="52.0">
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="196.0" />
-                        <Label fx:id="description_label" alignment="TOP_LEFT" layoutX="7.0" layoutY="9.0" prefHeight="179.0" prefWidth="175.0" wrapText="true">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Italic" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="143.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="203.0" />
+                  <Label fx:id="stats_label" alignment="TOP_LEFT" layoutX="152.0" layoutY="61.0" prefHeight="179.0" prefWidth="184.0" text="AAAAAAAAA" wrapText="true">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Courier New" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="attack_bonus_label" layoutX="262.0" layoutY="66.0" style="-fx-text-fill: green;" text="(+5)">
+                     <font>
+                        <Font name="Courier New" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="hp_bonus_label" layoutX="262.0" layoutY="81.0" style="-fx-text-fill: red;" text="(+20)">
+                     <font>
+                        <Font name="Courier New" size="12.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="361.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="160.0" />
+                  <Label fx:id="description_label" alignment="TOP_LEFT" layoutX="373.0" layoutY="61.0" prefHeight="179.0" prefWidth="134.0" wrapText="true">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Arial Italic" size="15.0" />
+                     </font>
+                  </Label>
                   <Label fx:id="card_name_label" alignment="CENTER" layoutX="2.0" layoutY="13.0" prefHeight="35.0" prefWidth="528.0" text="Placeholder" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="24.0" />

@@ -40,7 +40,9 @@ public class SpellCard extends Card {
     }
 
     public void decreaseDuration(){
-        this.duration--;
+        if(duration > 0) {
+            this.duration--;
+        }
     }
 
     public void setDuration(int duration){

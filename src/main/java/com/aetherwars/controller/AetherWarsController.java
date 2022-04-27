@@ -159,16 +159,22 @@ public class AetherWarsController implements Initializable {
                     switch(channel.getPhase()){
                         case DRAW:
                             this.current_player = (this.current_player + 1) % 2;
+                            channel.getSummonedController(0).forEach(controller -> {
+                                controller.getSummonedCard().updateDuration();
+                                controller.updateCard();
+                            });
+                            channel.getSummonedController(1).forEach(controller -> {
+                                controller.getSummonedCard().updateDuration();
+                                controller.updateCard();
+                            });
                             getCurrentPlayer().resetMana();
                             updateUIText();
                             drawCard();
                             break;
                         case END:
-                            channel.getSummonedController(current_player).forEach(controller -> {
+                            channel.getSummonedController(this.current_player).forEach(controller -> {
                                 controller.getSummonedCard().setHasSummoned(false);
                                 controller.getSummonedCard().setHasAttacked(false);
-                                controller.getSummonedCard().updateDuration();
-                                controller.updateCard();
                             });
                             getCurrentPlayer().increaseMana();
                             break;
@@ -263,24 +269,26 @@ public class AetherWarsController implements Initializable {
         description_image.setImage(new Image(file.toURI().toString()));
         description_label.setText(summonedCard.getCharacterCard().getDescription());
         card_name_label.setText(summonedCard.getCharacterCard().getName());
+        out.println("BONUS ATTACK: " + summonedCard.getBonusAttack());
         if(summonedCard.getBonusAttack() > 0){
             attack_bonus_label.setStyle("-fx-text-fill: green");
-            attack_bonus_label.setStyle("(+" + summonedCard.getBonusAttack() + ")");
+            attack_bonus_label.setText("(+" + summonedCard.getBonusAttack() + ")");
         }else if (summonedCard.getBonusAttack() < 0){
             attack_bonus_label.setStyle("-fx-text-fill: red");
-            attack_bonus_label.setStyle("(-" + summonedCard.getBonusAttack() + ")");
+            attack_bonus_label.setText("(-" + summonedCard.getBonusAttack() + ")");
         }
         if(summonedCard.getBonusHealth() > 0){
             hp_bonus_label.setStyle("-fx-text-fill: green");
-            hp_bonus_label.setStyle("(+" + summonedCard.getBonusHealth() + ")");
+            hp_bonus_label.setText("(+" + summonedCard.getBonusHealth() + ")");
         }else if (summonedCard.getBonusAttack() < 0){
             hp_bonus_label.setStyle("-fx-text-fill: red");
-            hp_bonus_label.setStyle("(-" + summonedCard.getBonusHealth() + ")");
+            hp_bonus_label.setText("(-" + summonedCard.getBonusHealth() + ")");
         }
         stats_label.setText(
-                "    ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
-                "     HP: " + summonedCard.getCharacterCard().getHealth() + "\n" +
-                "    LVL: " + summonedCard.getLevel() + "\n\n" +
+                "     ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
+                "      HP: " + summonedCard.getCharacterCard().getHealth() + "\n" +
+                "     LVL: " + summonedCard.getLevel() + "\n" +
+                "     EXP: " + summonedCard.getExp() + "\n\n" +
                         (summonedCard.getActiveSpells().size() > 0 ? "ACTIVE_SPELL: " + "\n" + summonedCard.toString() : "")
         );
     }
@@ -305,10 +313,10 @@ public class AetherWarsController implements Initializable {
         if(card instanceof CharacterCard){
             CharacterCard castCard = (CharacterCard) card;
             message  =
-            "    ATK: " + castCard.getAttack() + "\n" +
-            "     HP: " + castCard.getHealth() + "\n" +
-            " ATK_UP: " + castCard.getAttackUp() + "\n" +
-            "  HP_UP: " + castCard.getHealthUp();
+            "     ATK: " + castCard.getAttack() + "\n" +
+            "      HP: " + castCard.getHealth() + "\n" +
+            "  ATK_UP: " + castCard.getAttackUp() + "\n" +
+            "   HP_UP: " + castCard.getHealthUp();
         }
         else if (card instanceof MorphSpellCard){
             MorphSpellCard castCard = (MorphSpellCard) card;

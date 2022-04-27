@@ -14,14 +14,13 @@ public class SummonedCard {
     private int exp;
     private int level;
     private float summonedHealth;
-    private int bonusAttack;
-    private float bonusHealth;
+    private int summonedAttack;
     private CharacterCard character;
     private List<SpellCard> activeSpells;
     private boolean hasAttacked;
     private boolean hasSummoned;
     private boolean isEmpty;
-    private boolean swapActivated; 
+    private boolean isSwap;
 
     public SummonedCard(){
         this.isEmpty = true;
@@ -31,14 +30,12 @@ public class SummonedCard {
         this.character = character;
         this.exp = 0;
         this.level = 1;
-        this.bonusAttack = 0;
-        this.bonusHealth = 0.0f;
         this.activeSpells = new ArrayList<>();
         this.hasSummoned = true;
         this.hasAttacked = false;
         this.summonedHealth = character.getHealth();
         this.isEmpty = false;
-        this.swapActivated = false;
+        this.isSwap = false;
     }
 
     public void setHasAttacked(boolean hasAttacked){
@@ -65,6 +62,10 @@ public class SummonedCard {
         return this.summonedHealth;
     }
 
+    public int getSummonedAttack(){
+        return this.summonedAttack;
+    }
+
     public CharacterCard getCharacterCard(){
         return this.character;
     }
@@ -78,41 +79,34 @@ public class SummonedCard {
     }
 
     public int getTotalAttack(){
-        int result = this.character.getAttack() + this.bonusAttack;
-        return result = (result < 0) ? 0 : result;
+        int result = this.character.getAttack() + this.getBonusAttack();
+        return result = Math.max(result, 0);
     }  
 
     public float getTotalHealth(){
-        return this.summonedHealth + this.bonusHealth;
+        out.println("=================================");
+        out.println("SUMMONED HEALTH: " + summonedHealth);
+        out.println("BONUS HEALTH: " + getBonusHealth());
+        out.println("=================================");
+        return this.summonedHealth + this.getBonusHealth();
     }
 
     public int getBonusAttack(){
-        return this.bonusAttack;
+        return activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).mapToInt(PotionSpellCard::getAttack).sum();
     }
 
-    public void setBonusAttack(int bonusAttack) {
-        this.bonusAttack = bonusAttack;
-    }
-
-    public void setBonusHealth(float bonusHealth) {
-        this.bonusHealth = bonusHealth;
-    }
 
     public boolean isDead(){
         return getTotalHealth() <= 0.0f;
     }
 
     public float getBonusHealth(){
-        return this.bonusHealth;
+        return (float) activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).mapToDouble(PotionSpellCard::getHP).sum();
     }
 
     public void addExp(int exp){
         this.exp += exp;
         this.levelUp();
-    }
-
-    public void setAttack(int attack){
-        this.character.setAttack(attack);
     }
 
     public List<SpellCard> getActiveSpells(){
@@ -132,7 +126,6 @@ public class SummonedCard {
                         modifier = 2;
                         break;
                     default:
-                        break;
                 }
                 break;
             case NETHER:
@@ -144,7 +137,6 @@ public class SummonedCard {
                         modifier = 0.5f;
                         break;
                     default:
-                        break;
                 }
                 break;
             default:
@@ -156,58 +148,83 @@ public class SummonedCard {
                         modifier = 2;
                         break;
                     default:
-                        break;
                 }
         }
         return modifier;
     }
 
+    public float takeAttack(float attack){
+       List<PotionSpellCard> potionSPList = activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).collect(Collectors.toList());
+       out.print(potionSPList);
+        for (PotionSpellCard potionSP: potionSPList){
+            if(potionSP.getHP() > 0.0f){
+                if(attack > potionSP.getHP()){
+                    attack -= potionSP.getHP();
+                    potionSP.setHP(0.0f);
+                }else{
+                    potionSP.setHP(potionSP.getHP() - attack);
+                    attack = 0;
+                    return attack;
+                }
+            }
+        }
+        return attack;
+    }
 
     public void Attack(SummonedCard targetCard){
-        float newSourceBonusHealth = this.bonusHealth;
         float newSourceHealth = this.getSummonedHealth();
-        float newTargetBonusHealth = targetCard.getBonusHealth();
         float newTargetHealth = targetCard.getSummonedHealth();
 
         float modifierSource = this.getAttackModifier(targetCard);
         float modifierTarget = targetCard.getAttackModifier(this);
 
+        out.println("SOURCE: ");
+        this.getTotalHealth();
+        out.println("TARGET: ");
+        targetCard.getTotalHealth();
+
         float sourceAttack = modifierSource * (float) this.getTotalAttack();
-        out.println(sourceAttack);
-        if(sourceAttack > newTargetBonusHealth){
-            sourceAttack -= newTargetBonusHealth;
-            newTargetBonusHealth = 0.0f;
+        out.println("======================================");
+        out.println("SOURCE ATTACK BEFORE: " + sourceAttack);
+        sourceAttack = targetCard.takeAttack(sourceAttack);
+        out.println("SOURCE ATTACK AFTER: " + sourceAttack);
+        out.println("NEW TARGET HEALTH: " + newTargetHealth);
+        out.println("=======================================");
+        if(newTargetHealth > sourceAttack){
             newTargetHealth -= sourceAttack;
         }else{
-            newTargetBonusHealth -= sourceAttack;
+            newTargetHealth = 0.0f;
         }
-
         targetCard.setSummonedHealth(newTargetHealth);
-        targetCard.setBonusHealth(newTargetBonusHealth);
-
 
         float targetAttack = modifierTarget * (float) targetCard.getTotalAttack();
-        out.println(targetAttack);
-        if(targetAttack > newSourceBonusHealth){
-            targetAttack -= newSourceBonusHealth;
-            newSourceBonusHealth = 0.0f;
+        out.println("=======================================");
+        out.println("TARGET ATTACK BEFORE: " + targetAttack);
+        targetAttack = this.takeAttack(targetAttack);
+        out.println("TARGET ATTACK AFTER: " + targetAttack);
+        out.println("SOURCE TARGET HEALTH: " + newSourceHealth);
+        out.println("=========================================");
+        if(newSourceHealth > targetAttack){
             newSourceHealth -= targetAttack;
         }else{
-            newSourceBonusHealth -= targetAttack;
+            newSourceHealth = 0.0f;
         }
-
         this.setSummonedHealth(newSourceHealth);
-        this.bonusHealth = newSourceBonusHealth;
+        out.println("SOURCE: ");
+        this.getTotalHealth();
+        out.println("TARGET: ");
+        targetCard.getTotalHealth();
     }
 
     public void levelUp(){
         if(this.level < 10) {
-            if (this.exp >= getExpToNextLevel()) {
+            while (this.exp >= getExpToNextLevel()) {
                 this.exp -= getExpToNextLevel();
                 this.level++;
+                this.character.setHealth((float) this.character.getHealth() + this.character.getHealthUp());
+                this.summonedHealth = this.character.getHealth();
                 this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
-                this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
-                this.setSummonedHealth(this.character.getHealth());
+                this.summonedAttack = this.character.getAttackUp();
             }
         }
     }
@@ -229,97 +246,77 @@ public class SummonedCard {
     }
 
     // Spells
-    public void addActiveSpell(SpellCard other) {
-        if (other.getDuration() != 0 && !swapActivated){
-            if (other.getSpellType() == SpellType.PTN) this.activeSpells.add(new PotionSpellCard((PotionSpellCard)other));
-            else if  (other.getSpellType() == SpellType.LVL) this.activeSpells.add(new LevelSpellCard((LevelSpellCard) other));
-            else if (other.getSpellType() == SpellType.MORPH) this.activeSpells.add(new MorphSpellCard((MorphSpellCard) other));
-            else if (other.getSpellType() == SpellType.SWAP) this.activeSpells.add(new SwapSpellCard((SwapSpellCard) other));
+    public void addActiveSpell(SpellCard spellCard) {
+        spellCard.setDuration(spellCard.getDuration() * 2);
+        out.println("DURATION: " + spellCard.getDuration());
+        if(spellCard.getDuration() == 0){
+            out.println("PASS MORPH");
+            spellCard.setDuration(-1);
         }
-        if (other instanceof PotionSpellCard) {
-            PotionSpellCard temp = (PotionSpellCard) other;
-            System.out.println("duration potion: " + other.getDuration());
-            this.bonusAttack += temp.getAttack();
-            this.bonusHealth += temp.getHP();
-        }
-        else if (other instanceof LevelSpellCard){
-            LevelSpellCard temp = (LevelSpellCard) other;
-            if ((this.level + temp.getLevelup() > 0) && (this.level + temp.getLevelup() <= 10)) {
-                temp.setMana((int) Math.ceil((float)getLevel()/2));
-                leveling(temp.getLevelup());
-            }
-        }
-        else if (other instanceof MorphSpellCard){
-            MorphSpellCard temp = (MorphSpellCard) other;
-            this.character = temp.getMorphedCharacter();
-            this.exp = 0;
-            this.level = 1;
-            this.bonusAttack = 0;
-            this.bonusHealth = 0.0f;
-            this.activeSpells = new ArrayList<>();
-            this.hasSummoned = true;
-            this.hasAttacked = false;
-            this.summonedHealth = character.getHealth();
-            this.swapActivated = false;
-        }
-        else if (other instanceof SwapSpellCard) {
-            if (swapActivated) {
-                this.addDuration(other);
-            }
-            else {
-                this.swapActivated = true;
-                int tempAttack = this.character.getAttack();
-                int tempBonusAttack = this.bonusAttack;
-                this.character.setAttack( (int) this.character.getHealth());
-                this.setSummonedHealth(tempAttack);
-                this.bonusAttack = (int) this.bonusHealth;
-                this.bonusHealth = tempBonusAttack;
-            }
+        out.println("DURATION: " + spellCard.getDuration());
+        switch (spellCard.getSpellType()){
+            case PTN:
+                PotionSpellCard potionSC = new PotionSpellCard((PotionSpellCard) spellCard);
+                activeSpells.add(potionSC);
+                break;
+            case LVL:
+                LevelSpellCard levelSC = new LevelSpellCard((LevelSpellCard) spellCard);
+                levelSC.setMana((int) Math.ceil((float) this.getLevel() / 2));
+                leveling(levelSC.getLevelup());
+                activeSpells.add(levelSC);
+                break;
+            case MORPH:
+                out.println("WAK WAO");
+                MorphSpellCard morphSC = new MorphSpellCard((MorphSpellCard) spellCard);
+                out.println("LIHAT NIH");
+                this.character = new  CharacterCard(morphSC.getMorphedCharacter());
+                this.exp = 0;
+                this.level = 1;
+                this.activeSpells = new ArrayList<>();
+                this.hasSummoned = false;
+                this.hasAttacked = false;
+                this.summonedHealth = character.getHealth();
+                this.isSwap = false;
+                activeSpells.add(morphSC);
+                break;
+            case SWAP:
+                SwapSpellCard swapSC = new SwapSpellCard((SwapSpellCard) spellCard);
+
+                if(!this.isSwap) {
+                    this.isSwap = true;
+                    this.swapFunction();
+                }
+                activeSpells.add(swapSC);
+                break;
+            default:
         }
     }
 
     // Mengurangi durasi pada list activeSpell
     public void updateDuration() {
-        if (this.activeSpells == null) {
-            return;
-        }
-        else if (!this.activeSpells.isEmpty()){
-            for (SpellCard activeSpell: activeSpells) {
-                activeSpell.decreaseDuration();
-                // System.out.println(activeSpell.getName() +" duration: " +  activeSpell.getDuration());
-                if (activeSpell.getDuration() == (-1)) {
-                    revertSpell(activeSpell);
-                }
+        if(!this.isEmpty && activeSpells.size() > 0) {
+            activeSpells.forEach(SpellCard::decreaseDuration);
+            List<SpellCard> usedSpells = activeSpells.stream().filter(sp -> sp.getDuration() == 0).collect(Collectors.toList());
+            usedSpells.forEach(sp -> {
+                activeSpells.remove(sp);
+            });
+            List<SwapSpellCard> swapSCList = activeSpells.stream().filter(SwapSpellCard.class::isInstance).map(SwapSpellCard.class::cast).collect(Collectors.toList());
+            if (swapSCList.isEmpty() && this.isSwap) {
+                this.isSwap = false;
+                this.swapFunction();
             }
-            activeSpells.removeIf(a -> a.getDuration() == (-1));
         }
     }
 
-    // Membalikkan efek dari spell
-    public void revertSpell(SpellCard other) {
-        if (other instanceof PotionSpellCard) {
-            PotionSpellCard temp = (PotionSpellCard) other;
-            this.bonusHealth -=  temp.getHP();
-            this.bonusAttack -= temp.getAttack();
-        }
-        else if (other instanceof SwapSpellCard) {
-            int tempAttack = this.character.getAttack();
-            int tempBonusAttack = this.bonusAttack;
-            this.character.setAttack( (int) this.character.getHealth());
-            this.setSummonedHealth(tempAttack);
-            this.bonusAttack = (int) this.bonusHealth;
-            this.bonusHealth = tempBonusAttack;
-        }
-    }
-
-    // Menambahkan durasi pada spell card swap
-    public void addDuration(SpellCard other) {
-        for (SpellCard activeSpell: activeSpells) {
-            if (activeSpell.getSpellType() == SpellType.SWAP) {
-                activeSpell.setDuration(activeSpell.getDuration() + other.getDuration());
-                break;
-            }
-        }
+    public void swapFunction(){
+        int temp = (int) this.summonedHealth;
+        this.summonedHealth = (float) this.summonedAttack;
+        this.summonedAttack = temp;
+        activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).forEach(potionSP -> {
+            int tempHP = (int) potionSP.getHP();
+            potionSP.setHP((float) potionSP.getAttack());
+            potionSP.setAttack(tempHP);
+        });
     }
 
     // Menghapuskan active spells bisa digunakan kalau sudah mati karakter
@@ -329,20 +326,30 @@ public class SummonedCard {
 
     public void leveling(int up) {
         if (up == 1) {
-            this.level++;
-            this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
-            this.character.setHealth(this.character.getHealth() + (float) this.character.getHealthUp());
+            if(this.level == 10){
+                this.setSummonedHealth(this.character.getHealth());
+            }else{
+                this.exp += this.getExpToNextLevel();
+                this.levelUp();
+            }
         }
         else {
             this.level--;
             this.character.setAttack(this.character.getAttack() - this.character.getAttackUp());
-            this.character.setHealth(this.character.getHealth() - (float) this.character.getHealthUp());
+            this.summonedAttack = this.character.getAttack();
+            this.character.setHealth(this.character.getHealth() - this.character.getHealthUp());
+            if(this.summonedHealth > this.character.getHealth()){
+                this.summonedHealth = this.character.getHealth();
+            }
         }
-        this.setSummonedHealth(this.character.getHealth());
     }
 
     @Override
     public String toString() {
-        return this.activeSpells.stream().map(c -> c.getName()).collect(Collectors.joining(","));
+        StringBuilder message = new StringBuilder();
+        this.activeSpells.stream().forEach(sc -> {
+            message.append(sc.getName()).append(" (").append((sc.getDuration() == -1 ? "PERM" : (int) Math.ceil((float) sc.getDuration() / 2))).append(")").append("\n");
+        });
+        return message.toString();
     }
 }

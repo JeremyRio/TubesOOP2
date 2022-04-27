@@ -1,11 +1,7 @@
 package com.aetherwars.controller;
 
-import com.aetherwars.model.card.CharacterCard;
-import com.aetherwars.model.card.SummonedCard;
+import com.aetherwars.model.card.*;
 import com.aetherwars.model.event.GameChannel;
-import com.aetherwars.model.card.PotionSpellCard;
-import com.aetherwars.model.card.SwapSpellCard;
-import com.aetherwars.model.card.SpellCard;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -60,29 +56,41 @@ public class SummonedCardController implements Initializable {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         switch(channel.getPhase()) {
                             case PLAN:
-                                if(this.summonedCard.isEmpty()) {
-
-                                    if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
-                                        if (channel.getSourcePlanController().getCard() instanceof CharacterCard) {
+                                if(channel.isSourcePlan()){
+                                    HandCardController sourceController = channel.getSourcePlanController();
+                                    Card card = sourceController.getCard();
+                                    if(card instanceof CharacterCard){
+                                        if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this) && this.summonedCard.isEmpty()){
                                             card_pane.setOpacity(1);
-                                            CharacterCard characterCard = new CharacterCard((CharacterCard) channel.getSourcePlanController().getCard());
+                                            CharacterCard characterCard = new CharacterCard((CharacterCard) card);
                                             this.setSummonedCard(new SummonedCard(characterCard));
-                                            channel.getSourcePlanController().destroyCard();
+                                            sourceController.destroyCard();
+                                            this.summonedCard.setEmpty(false);
                                             channel.setSourcePlan(false);
+                                            channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
+                                            channel.getMainController().updateUIText();
+                                            channel.getMainController().setSummonedDescription(this.summonedCard);
                                         }
-                                        channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
-                                        channel.getMainController().updateUIText();
-                                    }
-                                }
-                                else {
-                                    // benarkah ini?
-                                    if (channel.isSourcePlan()) {
-                                        System.out.println(this.summonedCard.getClass());
-                                        updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
-                                        channel.getSourcePlanController().destroyCard();
-                                        channel.setSourcePlan(false);
-                                        channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
-                                        channel.getMainController().updateUIText();
+                                    } else if (card instanceof SpellCard){
+                                        if(card instanceof LevelSpellCard){
+                                            if(!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() > (int) Math.ceil((float) this.summonedCard.getLevel() / 2)){
+                                                summonedCard.addActiveSpell((SpellCard) card);
+                                                sourceController.destroyCard();
+                                                channel.setSourcePlan(false);
+                                                channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
+                                                channel.getMainController().updateUIText();
+                                                channel.getMainController().setSummonedDescription(this.summonedCard);
+                                                this.updateCard();
+                                            }
+                                        } else{
+                                            summonedCard.addActiveSpell((SpellCard) card);
+                                            sourceController.destroyCard();
+                                            channel.setSourcePlan(false);
+                                            channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
+                                            channel.getMainController().updateUIText();
+                                            channel.getMainController().setSummonedDescription(this.summonedCard);
+                                            this.updateCard();
+                                        }
                                     }
                                 }
                                 break;
@@ -90,7 +98,7 @@ public class SummonedCardController implements Initializable {
                                 if(!this.summonedCard.isEmpty()) {
                                     if (channel.isSourceAttack() && !channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         SummonedCardController sourceController = channel.getSourceAttackController();
-                                        this.summonedCard.Attack(sourceController.getSummonedCard());
+                                        sourceController.getSummonedCard().Attack(this.summonedCard);
                                         out.println(this.summonedCard.isDead());
                                         if(this.summonedCard.isDead() && !sourceController.getSummonedCard().isDead()){
                                             this.summonedCard.setEmpty(true);
@@ -137,7 +145,7 @@ public class SummonedCardController implements Initializable {
     }
 
     public void updateCard() {
-        if (this.summonedCard.isEmpty()) {System.out.println("masuk"); return;}
+        if (this.summonedCard.isEmpty()) return;
         File file = null;
         try {
             file = new File(getClass().getResource("../" + this.summonedCard.getImagePath()).toURI());
@@ -159,11 +167,5 @@ public class SummonedCardController implements Initializable {
                     + this.summonedCard.getLevel() + "]");
         }
     }
-
-    public void updateSpellCard(SpellCard summonedCard) {
-        this.summonedCard.addActiveSpell(summonedCard);
-        updateCard();
-    }
-
 
 }

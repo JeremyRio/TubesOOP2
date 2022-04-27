@@ -57,7 +57,6 @@ public class HandCardController implements Initializable {
                             gameChannel.getMainController().addDeckCard(card);
                             break;
                         case PLAN:
-                            out.println("PASS PLAN PHASE");
                             if(event.getClickCount() == 2){
                               if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
                                     destroyCard();
@@ -66,11 +65,6 @@ public class HandCardController implements Initializable {
                                     gameChannel.setSourcePlan(true);
                                     gameChannel.setSourcePlanController(this);
                                     out.println("Source: " + gameChannel.isSourcePlan());
-                                    // gameChannel.getHandCardController().stream().filter(c -> c != this).forEach(
-                                    //        controller -> {
-                                    //            controller.getCardPane().setStyle("-fx-border-width: 4; -fx-border-color: #3D3107");
-                                    //        }
-                                    // );
                             }
                             break;
                         case END:
@@ -121,7 +115,7 @@ public class HandCardController implements Initializable {
         }else if(card instanceof  LevelSpellCard){
             card_type_text.setText("LEVEL");
         }
-        mana_text.setText("MANA " + card.getMana());
+        mana_text.setText("MANA " + (card instanceof LevelSpellCard ? "?" : card.getMana()));
     }
 
     public StackPane getCardPane(){

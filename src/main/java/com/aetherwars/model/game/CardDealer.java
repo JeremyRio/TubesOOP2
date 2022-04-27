@@ -87,12 +87,7 @@ public class CardDealer {
             LevelSpellCard l = new LevelSpellCard(Integer.parseInt(row[0]), row[1], row[2], row[3]);
             this.cardMap.put(l.getID(), l);
         }
-
-//                for (Map.Entry<Integer, Card> card : this.cardMap.entrySet()) {
-//                    System.out.println(card.getValue().toString());
-//                }
-
-
+        
         deck1List.forEach(id -> this.deck1.add(this.cardMap.get(id)));
         deck2List.forEach(id -> this.deck2.add(this.cardMap.get(id)));
 

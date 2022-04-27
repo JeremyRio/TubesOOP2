@@ -14,7 +14,8 @@ public class MorphSpellCard extends SpellCard {
     public MorphSpellCard(MorphSpellCard other) {
         super(other.id, other.name, other.description, other.IMAGE_PATH, SpellType.MORPH, other.mana);
         this.targetid = other.targetid;
-        this.targetedCharacter = new CharacterCard((CharacterCard)targetedCharacter);
+        this.targetedCharacter = new CharacterCard((CharacterCard) other.getMorphedCharacter());
+        this.duration = other.getDuration();
     }
 
     public int getTargetID() {
