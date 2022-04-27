@@ -10,9 +10,9 @@ public class PotionSpellCard extends SpellCard {
     }
 
     public PotionSpellCard(PotionSpellCard other) {
-        super(other.id, other.name, other.description, other.IMAGE_PATH, SpellType.PTN, other.mana, other.duration);
-        this.hp = other.hp;
-        this.attack = other.attack;
+        super(other.getID(), other.getName(), other.getDescription(), other.getImagePath(), SpellType.PTN, other.getMana(), other.getDuration());
+        this.hp = other.getHP();
+        this.attack = other.getAttack();
     }
 
     public int getHP(){

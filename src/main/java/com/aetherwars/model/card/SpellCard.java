@@ -10,6 +10,13 @@ public class SpellCard extends Card {
         this.duration = 0;
     }
 
+    public SpellCard(SpellCard otherCard) {
+        super(otherCard.getID(), otherCard.getName(), otherCard.getMana(), otherCard.getDescription(), CardType.SPELL, otherCard.getImagePath());
+        this.spellType = otherCard.getSpellType();
+        this.mana = otherCard.getMana();
+        this.duration = otherCard.getDuration();
+    }
+    
     public SpellCard(int id, String name, String description, String IMAGE_PATH, SpellType spellType, int mana) {
         super(id, name, mana, description, CardType.SPELL, IMAGE_PATH);
         this.spellType = spellType;

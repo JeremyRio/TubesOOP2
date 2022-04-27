@@ -167,8 +167,8 @@ public class AetherWarsController implements Initializable {
                             channel.getSummonedController(current_player).forEach(controller -> {
                                 controller.getSummonedCard().setHasSummoned(false);
                                 controller.getSummonedCard().setHasAttacked(false);
-                                // controller.getSummonedCard().updateDuration();
-                                // controller.updateCard();
+                                controller.getSummonedCard().updateDuration();
+                                controller.updateCard();
                             });
                             getCurrentPlayer().increaseMana();
                             break;

@@ -6,6 +6,6 @@ public class SwapSpellCard extends SpellCard{
    }
 
    public SwapSpellCard(SwapSpellCard other){
-      super(other.id, other.name, other.description, other.IMAGE_PATH, SpellType.SWAP, other.mana, other.duration);
+      super(other.getID(), other.getName(), other.getDescription(), other.getImagePath(), SpellType.SWAP, other.getMana(), other.getDuration());
    }
 }

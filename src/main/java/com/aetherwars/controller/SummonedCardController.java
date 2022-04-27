@@ -75,14 +75,15 @@ public class SummonedCardController implements Initializable {
                                     }
                                 }
                                 else {
-                                    // if (channel.isSourcePlan() && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
-                                    //     System.out.println(this.summonedCard.getClass());
-                                    //     updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
-                                    //     channel.getSourcePlanController().destroyCard();
-                                    //     channel.setSourcePlan(false);
-                                    //     channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
-                                    //     channel.getMainController().updateUIText();
-                                    // }
+                                    // benarkah ini?
+                                    if (channel.isSourcePlan()) {
+                                        System.out.println(this.summonedCard.getClass());
+                                        updateSpellCard((SpellCard) channel.getSourcePlanController().getCard());
+                                        channel.getSourcePlanController().destroyCard();
+                                        channel.setSourcePlan(false);
+                                        channel.getMainController().getCurrentPlayer().decreaseMana(channel.getSourcePlanController().getCard().getMana());
+                                        channel.getMainController().updateUIText();
+                                    }
                                 }
                                 break;
                             case ATTACK:

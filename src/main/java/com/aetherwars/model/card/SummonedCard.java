@@ -227,13 +227,15 @@ public class SummonedCard {
     public String getImagePath(){
         return this.character.getImagePath();
     }
-    // Spells
 
+    // Spells
     public void addActiveSpell(SpellCard other) {
         if (other.getDuration() != 0 && !swapActivated){
-            this.activeSpells.add(other);
+            if (other.getSpellType() == SpellType.PTN) this.activeSpells.add(new PotionSpellCard((PotionSpellCard)other));
+            else if  (other.getSpellType() == SpellType.LVL) this.activeSpells.add(new LevelSpellCard((LevelSpellCard) other));
+            else if (other.getSpellType() == SpellType.MORPH) this.activeSpells.add(new MorphSpellCard((MorphSpellCard) other));
+            else if (other.getSpellType() == SpellType.SWAP) this.activeSpells.add(new SwapSpellCard((SwapSpellCard) other));
         }
-        System.out.println("durations potion 1: " + other.getDuration());
         if (other instanceof PotionSpellCard) {
             PotionSpellCard temp = (PotionSpellCard) other;
             System.out.println("duration potion: " + other.getDuration());
@@ -284,11 +286,12 @@ public class SummonedCard {
         else if (!this.activeSpells.isEmpty()){
             for (SpellCard activeSpell: activeSpells) {
                 activeSpell.decreaseDuration();
-                if (activeSpell.getDuration() == 0) {
+                // System.out.println(activeSpell.getName() +" duration: " +  activeSpell.getDuration());
+                if (activeSpell.getDuration() == (-1)) {
                     revertSpell(activeSpell);
                 }
             }
-            activeSpells.removeIf(a -> a.getDuration() == 0);
+            activeSpells.removeIf(a -> a.getDuration() == (-1));
         }
     }
 
