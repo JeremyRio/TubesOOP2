@@ -1,11 +1,10 @@
-package com.aetherwars.test;
+package com.test;
+
 
 import org.junit.Before;
 import org.junit.Test;
 import com.aetherwars.model.card.*;
 import com.aetherwars.model.game.CardDealer;
-
-import java.util.logging.Level;
 
 import static org.junit.Assert.*;
 
@@ -93,5 +92,30 @@ public class SummonedCardTest {
         summonedCharacter.Attack(summonedCharacterTarget);
         assertEquals(0, summonedCharacterTarget.getTotalHealth(),0);
         assertEquals(0,summonedCharacter.getTotalHealth(),0);
+    }
+    @Test
+    public void test3timesStackPotionthenSwap() {
+        // 106	Grabkeun	Discount for food purchases in Bandung	card/image/spell/potion/Grabkeun.png	0	2	1	2
+        PotionSpellCard potion = (PotionSpellCard)allCards.getCardFromMap(106);
+        SpellCard potionSpell = (SpellCard) potion;
+        summonedCharacter.addActiveSpell(potionSpell);// 10 4
+        summonedCharacter.addActiveSpell(potionSpell);// 10 6
+        summonedCharacter.addActiveSpell(potionSpell);// 10 8
+        assertEquals(10, summonedCharacter.getTotalAttack());
+        assertEquals(8, summonedCharacter.getTotalHealth(), 0);
+        SwapSpellCard swap = (SwapSpellCard)allCards.getCardFromMap(203);
+        SpellCard swapSpell = (SpellCard) swap;
+        summonedCharacter.addActiveSpell(swapSpell);
+        assertEquals(8, summonedCharacter.getTotalAttack());
+        assertEquals(10, summonedCharacter.getTotalHealth(), 0); //8 10 6 0
+        for (int i = 0; i < 4; i++) {
+            summonedCharacter.updateDuration();
+        }
+        assertEquals(2, summonedCharacter.getTotalAttack());
+        assertEquals(10, summonedCharacter.getTotalHealth(), 0);
+        summonedCharacter.updateDuration();
+        summonedCharacter.updateDuration();
+        assertEquals(10, summonedCharacter.getTotalAttack());
+        assertEquals(2, summonedCharacter.getTotalHealth(), 0);
     }
 }
