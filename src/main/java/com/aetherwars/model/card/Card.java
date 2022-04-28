@@ -8,6 +8,7 @@ public abstract class Card {
     protected int mana;
     protected CardType cardType;
 
+    // Default Constructor
     public Card(){
         this.id = 0;
         this.name = "";
@@ -16,6 +17,7 @@ public abstract class Card {
         this.mana = 0;
     }
 
+    // User-defined constructor
     public Card(int id, String name, int mana, String description, CardType cardType, String IMAGE_PATH) {
         this.id = id;
         this.name = name;
@@ -25,6 +27,7 @@ public abstract class Card {
         this.IMAGE_PATH = IMAGE_PATH;
     }
 
+    // GETTER
     public int getID() {
         return this.id;
     }
@@ -43,11 +46,12 @@ public abstract class Card {
         return this.mana;
     }
 
+    public String getImagePath() { return this.IMAGE_PATH; }
+
+    // SETTER mana
     public void setMana(int mana) {
         this.mana = mana;
     }
-
-    public String getImagePath() { return this.IMAGE_PATH; }
 
     @Override
     public String toString() {

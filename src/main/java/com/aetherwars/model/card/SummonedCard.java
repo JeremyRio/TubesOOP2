@@ -22,10 +22,12 @@ public class SummonedCard {
     private boolean isEmpty;
     private boolean isSwap;
 
+    // Default Constructor
     public SummonedCard(){
         this.isEmpty = true;
     }
 
+    // Constructor
     public SummonedCard(CharacterCard character) {
         this.character = character;
         this.exp = 0;
@@ -39,6 +41,7 @@ public class SummonedCard {
         this.isSwap = false;
     }
 
+    // SETTER
     public void setHasAttacked(boolean hasAttacked){
         this.hasAttacked = hasAttacked;
     }
@@ -51,12 +54,13 @@ public class SummonedCard {
         this.isEmpty = isEmpty;
     }
 
-    public boolean hasSummoned(){
-        return this.hasSummoned;
-    }
-
     public void setSummonedHealth(float health){
         this.summonedHealth = health;
+    }
+
+    // GETTER
+    public boolean hasSummoned(){
+        return this.hasSummoned;
     }
 
     public float getSummonedHealth(){
@@ -96,24 +100,28 @@ public class SummonedCard {
         return activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).mapToInt(PotionSpellCard::getAttack).sum();
     }
 
-
+    // Check if SummonedCard is dead
     public boolean isDead(){
         return getTotalHealth() <= 0.0f;
     }
 
+    // Returns bonus health of SummonedCard
     public float getBonusHealth(){
         return (float) activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).mapToDouble(PotionSpellCard::getHP).sum();
     }
 
+    // Adds Exp to SummonedCard
     public void addExp(int exp){
         this.exp += exp;
         this.levelUp();
     }
 
+    // Returns list of active spells
     public List<SpellCard> getActiveSpells(){
         return this.activeSpells;
     }
 
+    // Returns AttackModifier from SummonedCard to its target
     public float getAttackModifier(SummonedCard target){
         float modifier = 1;
         CharacterType targetType = target.getCharacterCard().getCharacterType();
@@ -154,6 +162,7 @@ public class SummonedCard {
         return modifier;
     }
 
+    // Returns damage taken after reduction from potion
     public float takeAttack(float attack){
        List<PotionSpellCard> potionSPList = activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).collect(Collectors.toList());
        out.print(potionSPList);
@@ -172,7 +181,10 @@ public class SummonedCard {
         return attack;
     }
 
+    // Procedure to call when SummonedCard attacks another
     public void Attack(SummonedCard targetCard){
+
+        // Gets health and modifier information for both SummonedCard
         float newSourceHealth = this.getSummonedHealth();
         float newTargetHealth = targetCard.getSummonedHealth();
 
@@ -217,6 +229,7 @@ public class SummonedCard {
         targetCard.getTotalHealth();
     }
 
+    // Levels up SummonedCard and updates its stats
     public void levelUp(){
         if(this.level < 10) {
             while (this.exp >= getExpToNextLevel()) {
@@ -230,6 +243,7 @@ public class SummonedCard {
         }
     }
 
+    // GETTER
     public int getExpToNextLevel(){
         return (this.level * 2) - 1;
     }
@@ -246,7 +260,7 @@ public class SummonedCard {
         return this.character.getImagePath();
     }
 
-    // Spells
+    // Adds active spells
     public void addActiveSpell(SpellCard spellCard) {
         switch (spellCard.getSpellType()){
             case PTN:
@@ -304,6 +318,7 @@ public class SummonedCard {
         }
     }
 
+    // Swaps SummonedCard's attack and health
     public void swapFunction(){
         // System.out.println("Summoned health before: "+ this.summonedHealth);
         int temp = (int) this.summonedHealth;
@@ -325,6 +340,7 @@ public class SummonedCard {
         this.activeSpells.clear();
     }
 
+    // Updates SummonedCard's level and stats
     public void leveling(int up) {
         if (up == 1) {
             if(this.level == 10){
