@@ -77,9 +77,13 @@ public class SummonedCardController implements Initializable {
                                                 summonedCard.addActiveSpell((SpellCard) card);
                                                 sourceController.destroyCard();
                                                 channel.setSourcePlan(false);
-                                                channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
+                                                channel.getMainController().getCurrentPlayer().decreaseMana((int) Math.ceil((float) this.summonedCard.getLevel() / 2));
                                                 channel.getMainController().updateUIText();
                                                 channel.getMainController().setSummonedDescription(this.summonedCard);
+                                                if (summonedCard.isDead()){
+                                                    this.summonedCard.setEmpty(true);
+                                                    this.card_pane.setOpacity(0);
+                                                }
                                                 this.updateCard();
                                             }
                                         } else{
@@ -89,6 +93,10 @@ public class SummonedCardController implements Initializable {
                                             channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
                                             channel.getMainController().updateUIText();
                                             channel.getMainController().setSummonedDescription(this.summonedCard);
+                                            if (summonedCard.isDead()){
+                                                this.summonedCard.setEmpty(true);
+                                                this.card_pane.setOpacity(0);
+                                            }
                                             this.updateCard();
                                         }
                                     }
@@ -99,7 +107,6 @@ public class SummonedCardController implements Initializable {
                                     if (channel.isSourceAttack() && !channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         SummonedCardController sourceController = channel.getSourceAttackController();
                                         sourceController.getSummonedCard().Attack(this.summonedCard);
-                                        out.println(this.summonedCard.isDead());
                                         if(this.summonedCard.isDead() && !sourceController.getSummonedCard().isDead()){
                                             this.summonedCard.setEmpty(true);
                                             this.card_pane.setOpacity(0);

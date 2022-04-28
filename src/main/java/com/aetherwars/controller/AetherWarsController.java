@@ -275,20 +275,21 @@ public class AetherWarsController implements Initializable {
             attack_bonus_label.setText("(+" + summonedCard.getBonusAttack() + ")");
         }else if (summonedCard.getBonusAttack() < 0){
             attack_bonus_label.setStyle("-fx-text-fill: red");
-            attack_bonus_label.setText("(-" + summonedCard.getBonusAttack() + ")");
+            attack_bonus_label.setText("(" + summonedCard.getBonusAttack() + ")");
         }
         if(summonedCard.getBonusHealth() > 0){
             hp_bonus_label.setStyle("-fx-text-fill: green");
             hp_bonus_label.setText("(+" + summonedCard.getBonusHealth() + ")");
         }else if (summonedCard.getBonusAttack() < 0){
             hp_bonus_label.setStyle("-fx-text-fill: red");
-            hp_bonus_label.setText("(-" + summonedCard.getBonusHealth() + ")");
+            hp_bonus_label.setText("(" + summonedCard.getBonusHealth() + ")");
         }
         stats_label.setText(
-                "     ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
                 "      HP: " + summonedCard.getCharacterCard().getHealth() + "\n" +
+                "     ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
                 "     LVL: " + summonedCard.getLevel() + "\n" +
-                "     EXP: " + summonedCard.getExp() + "\n\n" +
+                "     EXP: " + summonedCard.getExp() + "\n" +
+                "    TYPE: " + summonedCard.getCharacterCard().getCharacterType() + "\n\n" +
                         (summonedCard.getActiveSpells().size() > 0 ? "ACTIVE_SPELL: " + "\n" + summonedCard.toString() : "")
         );
     }
@@ -313,8 +314,8 @@ public class AetherWarsController implements Initializable {
         if(card instanceof CharacterCard){
             CharacterCard castCard = (CharacterCard) card;
             message  =
-            "     ATK: " + castCard.getAttack() + "\n" +
             "      HP: " + castCard.getHealth() + "\n" +
+            "     ATK: " + castCard.getAttack() + "\n" +
             "  ATK_UP: " + castCard.getAttackUp() + "\n" +
             "   HP_UP: " + castCard.getHealthUp();
         }
@@ -326,8 +327,8 @@ public class AetherWarsController implements Initializable {
         else if (card instanceof PotionSpellCard){
             PotionSpellCard castCard = (PotionSpellCard) card;
             message =
-            "     ATK: " + castCard.getAttack() + "\n" +
             "      HP: " + castCard.getHP() + "\n" +
+            "     ATK: " + castCard.getAttack() + "\n" +
             "DURATION: " + (castCard.getDuration() == 0 ? "PERMANENT" : castCard.getDuration());
         }
         else if (card instanceof  SwapSpellCard){

@@ -248,28 +248,22 @@ public class SummonedCard {
 
     // Spells
     public void addActiveSpell(SpellCard spellCard) {
-        // spellCard.setDuration(spellCard.getDuration() * 2); why :v??
-        out.println("DURATION: " + spellCard.getDuration());
-        if(spellCard.getDuration() == 0){
-            out.println("PASS MORPH");
-            spellCard.setDuration(-1);
-        }
-        out.println("DURATION: " + spellCard.getDuration());
         switch (spellCard.getSpellType()){
             case PTN:
                 PotionSpellCard potionSC = new PotionSpellCard((PotionSpellCard) spellCard);
-                activeSpells.add(potionSC);
+                potionSC.setDuration(spellCard.getDuration() * 2);
+                activeSpells.add(0, potionSC);
                 break;
             case LVL:
                 LevelSpellCard levelSC = new LevelSpellCard((LevelSpellCard) spellCard);
+                levelSC.setDuration(spellCard.getDuration() * 2);
                 levelSC.setMana((int) Math.ceil((float) this.getLevel() / 2));
                 leveling(levelSC.getLevelup());
-                activeSpells.add(levelSC);
+                activeSpells.add(0, levelSC);
                 break;
             case MORPH:
-                out.println("WAK WAO");
                 MorphSpellCard morphSC = new MorphSpellCard((MorphSpellCard) spellCard);
-                out.println("LIHAT NIH");
+                morphSC.setDuration(spellCard.getDuration() * 2);
                 this.character = new  CharacterCard(morphSC.getMorphedCharacter());
                 this.exp = 0;
                 this.level = 1;
@@ -279,16 +273,16 @@ public class SummonedCard {
                 this.summonedHealth = character.getHealth();
                 this.summonedAttack = character.getAttack();
                 this.isSwap = false;
-                activeSpells.add(morphSC);
+                activeSpells.add(0, morphSC);
                 break;
             case SWAP:
                 SwapSpellCard swapSC = new SwapSpellCard((SwapSpellCard) spellCard);
-
+                swapSC.setDuration(spellCard.getDuration() * 2);
                 if(!this.isSwap) {
                     this.isSwap = true;
                     this.swapFunction();
                 }
-                activeSpells.add(swapSC);
+                activeSpells.add(0, swapSC);
                 break;
             default:
         }
@@ -297,8 +291,7 @@ public class SummonedCard {
     // Mengurangi durasi pada list activeSpell
     public void updateDuration() {
         if(!this.isEmpty && activeSpells.size() > 0) {
-            activeSpells.forEach(SpellCard::decreaseDuration);
-            List<SpellCard> usedSpells = activeSpells.stream().filter(sp -> sp.getDuration() == 0).collect(Collectors.toList());
+            List<SpellCard> usedSpells = activeSpells.stream().filter(sp -> sp.getDuration() == 1).collect(Collectors.toList());
             usedSpells.forEach(sp -> {
                 activeSpells.remove(sp);
             });
@@ -307,6 +300,7 @@ public class SummonedCard {
                 this.isSwap = false;
                 this.swapFunction();
             }
+            activeSpells.forEach(SpellCard::decreaseDuration);
         }
     }
 
@@ -316,7 +310,9 @@ public class SummonedCard {
         // System.out.println("Summoned attac before: " + this.summonedAttack);
         this.summonedHealth = (float) this.summonedAttack;
         this.summonedAttack = temp;
-        // System.out.println("total after health and attack: " + this.summonedHealth + this.summonedAttack);
+        temp = (int) this.getCharacterCard().getHealth();
+        this.character.setHealth((float) this.character.getAttack());
+        this.character.setAttack(temp);
         activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).forEach(potionSP -> {
             int tempHP = (int) potionSP.getHP();
             potionSP.setHP((float) potionSP.getAttack());
@@ -356,8 +352,10 @@ public class SummonedCard {
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();
-        this.activeSpells.stream().forEach(sc -> {
-            message.append(sc.getName()).append(" (").append((sc.getDuration() == -1 ? "PERM" : (int) Math.ceil((float) sc.getDuration() / 2))).append(")").append("\n");
+        this.activeSpells.forEach(sc -> {
+            out.println("LOGIC DURATION: " + sc.getDuration());
+            out.println("GUI DURATION: " + (int) Math.ceil((float) sc.getDuration() / 2));
+            message.append(sc.getName()).append(" (").append((sc.getDuration() == 0 ? "PERM" : (int) Math.ceil((float) sc.getDuration() / 2))).append(")").append("\n");
         });
         return message.toString();
     }

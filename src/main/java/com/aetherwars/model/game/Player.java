@@ -20,8 +20,8 @@ public class Player {
         handCard = new ArrayList<>();
         this.name = name;
         this.health = 1;
-        this.mana = 1;
-        this.initialMana = 1;
+        this.mana = 100;
+        this.initialMana = 100;
         this.initialDeckSize = initialDeckSize;
         this.deckCard = deckCard;
     }
