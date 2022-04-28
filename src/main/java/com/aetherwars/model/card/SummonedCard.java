@@ -34,6 +34,7 @@ public class SummonedCard {
         this.hasSummoned = true;
         this.hasAttacked = false;
         this.summonedHealth = character.getHealth();
+        this.summonedAttack = character.getAttack();
         this.isEmpty = false;
         this.isSwap = false;
     }
@@ -79,7 +80,7 @@ public class SummonedCard {
     }
 
     public int getTotalAttack(){
-        int result = this.character.getAttack() + this.getBonusAttack();
+        int result = this.summonedAttack + this.getBonusAttack();
         return result = Math.max(result, 0);
     }  
 
@@ -224,7 +225,7 @@ public class SummonedCard {
                 this.character.setHealth((float) this.character.getHealth() + this.character.getHealthUp());
                 this.summonedHealth = this.character.getHealth();
                 this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
-                this.summonedAttack = this.character.getAttackUp();
+                this.summonedAttack = this.character.getAttack();
             }
         }
     }
@@ -247,7 +248,7 @@ public class SummonedCard {
 
     // Spells
     public void addActiveSpell(SpellCard spellCard) {
-        spellCard.setDuration(spellCard.getDuration() * 2);
+        // spellCard.setDuration(spellCard.getDuration() * 2); why :v??
         out.println("DURATION: " + spellCard.getDuration());
         if(spellCard.getDuration() == 0){
             out.println("PASS MORPH");
@@ -276,6 +277,7 @@ public class SummonedCard {
                 this.hasSummoned = false;
                 this.hasAttacked = false;
                 this.summonedHealth = character.getHealth();
+                this.summonedAttack = character.getAttack();
                 this.isSwap = false;
                 activeSpells.add(morphSC);
                 break;
@@ -309,9 +311,12 @@ public class SummonedCard {
     }
 
     public void swapFunction(){
+        // System.out.println("Summoned health before: "+ this.summonedHealth);
         int temp = (int) this.summonedHealth;
+        // System.out.println("Summoned attac before: " + this.summonedAttack);
         this.summonedHealth = (float) this.summonedAttack;
         this.summonedAttack = temp;
+        // System.out.println("total after health and attack: " + this.summonedHealth + this.summonedAttack);
         activeSpells.stream().filter(PotionSpellCard.class::isInstance).map(PotionSpellCard.class::cast).forEach(potionSP -> {
             int tempHP = (int) potionSP.getHP();
             potionSP.setHP((float) potionSP.getAttack());
@@ -334,12 +339,16 @@ public class SummonedCard {
             }
         }
         else {
-            this.level--;
-            this.character.setAttack(this.character.getAttack() - this.character.getAttackUp());
-            this.summonedAttack = this.character.getAttack();
-            this.character.setHealth(this.character.getHealth() - this.character.getHealthUp());
-            if(this.summonedHealth > this.character.getHealth()){
-                this.summonedHealth = this.character.getHealth();
+            if(this.level == 1){
+                this.setSummonedHealth(this.character.getHealth());
+            }else{
+                this.level--;
+                this.character.setAttack(this.character.getAttack() - this.character.getAttackUp());
+                this.summonedAttack = this.character.getAttack();
+                this.character.setHealth(this.character.getHealth() - this.character.getHealthUp());
+                if(this.summonedHealth > this.character.getHealth()){
+                    this.summonedHealth = this.character.getHealth();
+                }
             }
         }
     }
