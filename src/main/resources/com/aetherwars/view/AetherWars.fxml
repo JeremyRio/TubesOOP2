@@ -13,8 +13,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="game_zone" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.AetherWarsController">
+<StackPane fx:id="game_zone" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.AetherWarsController">
    <children>
+      <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #000000;" />
+      <ImageView opacity="0.6" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../player/background.jpg" />
+         </image></ImageView>
       <Pane maxHeight="650.0" maxWidth="1200.0" minHeight="650.0" minWidth="1200.0" prefHeight="650.0" prefWidth="1200.0">
          <children>
             <Pane layoutX="270.0" layoutY="313.0" prefHeight="24.0" prefWidth="596.0">
@@ -63,7 +68,7 @@
                   <AnchorPane fx:id="player1_zone1" layoutX="80.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player1_zone5" layoutX="300.0" layoutY="51.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player1_zone2" layoutX="190.0" layoutY="1.0" prefHeight="101.0" prefWidth="101.0" />
-                  <Text fx:id="player1_health_text" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0" />
+                  <Text fx:id="player1_health_text" fill="WHITE" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0" />
                </children>
             </Pane>
             <HBox fx:id="hand_card_box" layoutX="24.0" layoutY="410.0" prefHeight="207.0" prefWidth="642.0" spacing="5.0">
@@ -220,7 +225,10 @@
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="101.0" layoutX="110.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="101.0" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="101.0" layoutX="220.0" stroke="BLACK" strokeType="INSIDE" width="101.0" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="101.0" layoutY="51.0" stroke="BLACK" strokeType="INSIDE" width="101.0" />
-                  <Text fx:id="player2_health_text" layoutX="341.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0" />
+                  <Text fx:id="player2_health_text" fill="WHITE" layoutX="341.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font></Text>
                   <AnchorPane fx:id="player2_zone5" layoutY="51.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player2_zone4" layoutX="110.0" layoutY="106.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player2_zone2" layoutX="110.0" prefHeight="101.0" prefWidth="101.0" />

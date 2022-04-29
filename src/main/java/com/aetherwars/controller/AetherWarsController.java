@@ -7,7 +7,7 @@ import com.aetherwars.model.game.Player;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -152,7 +152,7 @@ public class AetherWarsController implements Initializable {
             });
 
             phase_button.setOnAction(e -> {
-                if(channel.getPhase() == Phase.END && getCurrentPlayer().getHandCardList().size() == 5){
+                if(channel.getPhase() == Phase.PLAN && getCurrentPlayer().getHandCardList().size() == 5){
                     out.println("THROW A CARD!");
                 } else{
                     switchPhase();
@@ -170,6 +170,11 @@ public class AetherWarsController implements Initializable {
                             getCurrentPlayer().resetMana();
                             updateUIText();
                             drawCard();
+                            break;
+                        case ATTACK:
+                            channel.getHandCardController().forEach(controller -> {
+                                controller.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff");
+                            });
                             break;
                         case END:
                             channel.getSummonedController(this.current_player).forEach(controller -> {
@@ -269,7 +274,6 @@ public class AetherWarsController implements Initializable {
         description_image.setImage(new Image(file.toURI().toString()));
         description_label.setText(summonedCard.getCharacterCard().getDescription());
         card_name_label.setText(summonedCard.getCharacterCard().getName());
-        out.println("BONUS ATTACK: " + summonedCard.getBonusAttack());
         if(summonedCard.getBonusAttack() > 0){
             attack_bonus_label.setStyle("-fx-text-fill: green");
             attack_bonus_label.setText("(+" + summonedCard.getBonusAttack() + ")");
@@ -285,8 +289,8 @@ public class AetherWarsController implements Initializable {
             hp_bonus_label.setText("(" + summonedCard.getBonusHealth() + ")");
         }
         stats_label.setText(
-                "      HP: " + summonedCard.getCharacterCard().getHealth() + "\n" +
-                "     ATK: " + summonedCard.getCharacterCard().getAttack() + "\n" +
+                "      HP: " + summonedCard.getSummonedHealth() + "\n" +
+                "     ATK: " + summonedCard.getSummonedAttack() + "\n" +
                 "     LVL: " + summonedCard.getLevel() + "\n" +
                 "     EXP: " + summonedCard.getExp() + "\n" +
                 "    TYPE: " + summonedCard.getCharacterCard().getCharacterType() + "\n\n" +
@@ -363,7 +367,6 @@ public class AetherWarsController implements Initializable {
             }
         });
     }
-
     public void switchPhase(){
         int prev_phase_idx = phase_idx - 1;
         if (prev_phase_idx < 0) prev_phase_idx = 3;

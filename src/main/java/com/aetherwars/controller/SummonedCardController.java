@@ -59,8 +59,8 @@ public class SummonedCardController implements Initializable {
                                 if(channel.isSourcePlan()){
                                     HandCardController sourceController = channel.getSourcePlanController();
                                     Card card = sourceController.getCard();
-                                    if(card instanceof CharacterCard){
-                                        if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this) && this.summonedCard.isEmpty()){
+                                    if(card instanceof CharacterCard && this.summonedCard.isEmpty()){
+                                        if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
                                             card_pane.setOpacity(1);
                                             CharacterCard characterCard = new CharacterCard((CharacterCard) card);
                                             this.setSummonedCard(new SummonedCard(characterCard));
@@ -71,7 +71,7 @@ public class SummonedCardController implements Initializable {
                                             channel.getMainController().updateUIText();
                                             channel.getMainController().setSummonedDescription(this.summonedCard);
                                         }
-                                    } else if (card instanceof SpellCard){
+                                    } else if (card instanceof SpellCard && !this.summonedCard.isEmpty()){
                                         if(card instanceof LevelSpellCard){
                                             if(!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() > (int) Math.ceil((float) this.summonedCard.getLevel() / 2)){
                                                 summonedCard.addActiveSpell((SpellCard) card);
@@ -79,12 +79,12 @@ public class SummonedCardController implements Initializable {
                                                 channel.setSourcePlan(false);
                                                 channel.getMainController().getCurrentPlayer().decreaseMana((int) Math.ceil((float) this.summonedCard.getLevel() / 2));
                                                 channel.getMainController().updateUIText();
+
                                                 channel.getMainController().setSummonedDescription(this.summonedCard);
                                                 if (summonedCard.isDead()){
                                                     this.summonedCard.setEmpty(true);
                                                     this.card_pane.setOpacity(0);
                                                 }
-                                                this.updateCard();
                                             }
                                         } else{
                                             summonedCard.addActiveSpell((SpellCard) card);
@@ -122,6 +122,11 @@ public class SummonedCardController implements Initializable {
                                             sourceController.card_pane.setOpacity(0);
                                         }
                                         this.updateCard();
+                                        if(this.summonedCard.isEmpty()){
+                                            channel.getMainController().description_pane.setOpacity(0);
+                                        }else{
+                                            channel.getMainController().setSummonedDescription(this.summonedCard);
+                                        }
                                         sourceController.updateCard();
                                         sourceController.getSummonedCard().setHasAttacked(true);
                                         channel.setSourceAttack(false);
@@ -136,6 +141,16 @@ public class SummonedCardController implements Initializable {
                                 break;
                             default:
                                 break;
+                        }
+                    }else if(event.getButton() == MouseButton.SECONDARY){
+                        if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
+                            if(channel.getMainController().getCurrentPlayer().getMana() > 0 && this.summonedCard.getLevel() < 10){
+                                this.summonedCard.addExp(1);
+                                channel.getMainController().getCurrentPlayer().decreaseMana(1);
+                                channel.getMainController().updateUIText();
+                                this.updateCard();
+                                channel.getMainController().setSummonedDescription(this.summonedCard);
+                            }
                         }
                     }
                 }

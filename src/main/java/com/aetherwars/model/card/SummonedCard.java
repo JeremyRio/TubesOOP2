@@ -112,8 +112,10 @@ public class SummonedCard {
 
     // Adds Exp to SummonedCard
     public void addExp(int exp){
-        this.exp += exp;
-        this.levelUp();
+        if(this.level < 10) {
+            this.exp += exp;
+            this.levelUp();
+        }
     }
 
     // Returns list of active spells
@@ -231,15 +233,13 @@ public class SummonedCard {
 
     // Levels up SummonedCard and updates its stats
     public void levelUp(){
-        if(this.level < 10) {
-            while (this.exp >= getExpToNextLevel()) {
-                this.exp -= getExpToNextLevel();
-                this.level++;
-                this.character.setHealth((float) this.character.getHealth() + this.character.getHealthUp());
-                this.summonedHealth = this.character.getHealth();
-                this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
-                this.summonedAttack = this.character.getAttack();
-            }
+        while (this.exp >= getExpToNextLevel()) {
+            this.exp -= getExpToNextLevel();
+            this.level++;
+            this.character.setHealth((float) this.character.getHealth() + this.character.getHealthUp());
+            this.summonedHealth = this.character.getHealth();
+            this.character.setAttack(this.character.getAttack() + this.character.getAttackUp());
+            this.summonedAttack = this.character.getAttack();
         }
     }
 

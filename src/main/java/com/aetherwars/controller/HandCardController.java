@@ -62,6 +62,10 @@ public class HandCardController implements Initializable {
                                     destroyCard();
                               }
                             }else if(gameChannel.getMainController().getCurrentPlayer().getMana() >= this.card.getMana()){
+                                    gameChannel.getHandCardController().stream().filter(c -> !c.equals(this)).forEach(c -> {
+                                        c.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff");
+                                    });
+                                    this.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: green; -fx-background-color: #ffffffff");
                                     gameChannel.setSourcePlan(true);
                                     gameChannel.setSourcePlanController(this);
                                     out.println("Source: " + gameChannel.isSourcePlan());
