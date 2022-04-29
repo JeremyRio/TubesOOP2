@@ -139,7 +139,7 @@ public class AetherWarsController implements Initializable {
                         player1_health_text.setText(Integer.toString(playerList[0].getHealth()));
                         player1_progress_bar.setProgress((double) playerList[0].getHealth()/80);
                         if(playerList[0].getHealth() == 0){
-                            createWinWindow("PLAYER 2");
+                            createWinWindow("Player 2");
                         }
                     }
                 }
@@ -154,7 +154,7 @@ public class AetherWarsController implements Initializable {
                         player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
                         player2_progress_bar.setProgress((double) playerList[1].getHealth()/80);
                         if(playerList[1].getHealth() == 0){
-                            createWinWindow("PLAYER 1");
+                            createWinWindow("Player 1");
                         }
                     }
                 }
@@ -391,7 +391,7 @@ public class AetherWarsController implements Initializable {
                 }
             });
         }else{
-            createWinWindow("PLAYER " + ((getCurrentPlayerIDX() + 1) % 2 + 1));
+            createWinWindow("Player " + ((getCurrentPlayerIDX() + 1) % 2 + 1));
         }
 
     }

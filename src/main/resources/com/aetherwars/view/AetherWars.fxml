@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="game_zone" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.AetherWarsController">
+<StackPane fx:id="game_zone" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aetherwars.controller.AetherWarsController">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #000000;" />
       <ImageView opacity="0.6" pickOnBounds="true" preserveRatio="true">
@@ -25,7 +25,7 @@
          <children>
             <Pane layoutX="270.0" layoutY="313.0" prefHeight="24.0" prefWidth="596.0">
                <children>
-                  <Rectangle fx:id="draw" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
+                  <Rectangle fx:id="draw" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: #ff8e3d;" width="149.0" />
                   <Rectangle fx:id="plan" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" layoutX="149.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
                   <Rectangle fx:id="attack" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" layoutX="298.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
                   <Rectangle fx:id="end" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="24.0" layoutX="447.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />

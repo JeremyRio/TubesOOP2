@@ -82,11 +82,13 @@ public class SummonedCardController implements Initializable {
                                         }
                                     } else if (card instanceof SpellCard && !this.summonedCard.isEmpty()) {
                                         if (card instanceof LevelSpellCard) {
-                                            if (!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() > (int) Math.ceil((float) this.summonedCard.getLevel() / 2)) {
+                                            int manaLevel = (int) Math.ceil((float) this.summonedCard.getLevel() / 2);
+                                            if (!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() >= manaLevel) {
                                                 summonedCard.addActiveSpell((SpellCard) card);
                                                 sourceController.destroyCard();
                                                 channel.setSourcePlan(false);
-                                                channel.getMainController().getCurrentPlayer().decreaseMana((int) Math.ceil((float) this.summonedCard.getLevel() / 2));
+                                                out.println(manaLevel);
+                                                channel.getMainController().getCurrentPlayer().decreaseMana(manaLevel);
                                                 channel.getMainController().updateUIText();
                                                 channel.getMainController().setSummonedDescription(this.summonedCard);
                                                 if (summonedCard.isDead()) {
