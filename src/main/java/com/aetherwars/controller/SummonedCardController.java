@@ -88,12 +88,12 @@ public class SummonedCardController implements Initializable {
                                                 channel.setSourcePlan(false);
                                                 channel.getMainController().getCurrentPlayer().decreaseMana((int) Math.ceil((float) this.summonedCard.getLevel() / 2));
                                                 channel.getMainController().updateUIText();
-
                                                 channel.getMainController().setSummonedDescription(this.summonedCard);
                                                 if (summonedCard.isDead()) {
                                                     this.summonedCard.setEmpty(true);
                                                     this.card_pane.setOpacity(0);
                                                 }
+                                                this.updateCard();
                                             }
                                         } else {
                                             summonedCard.addActiveSpell((SpellCard) card);
@@ -141,7 +141,6 @@ public class SummonedCardController implements Initializable {
                                         channel.setSourceAttack(false);
                                     } else if (channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         if (!this.summonedCard.hasSummoned() && !this.summonedCard.hasAttacked()) {
-                                            out.println("PASS ATTACK MODE");
                                             channel.setSourceAttack(true);
                                             channel.setSourceAttackController(this);
                                         }
