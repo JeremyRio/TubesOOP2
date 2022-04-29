@@ -25,7 +25,7 @@ public class PlayerTest {
     public void MethodTest() {
         assertEquals(1, testPlayer.getHealth());
         assertEquals(24, testPlayer.getInitialDeckSize());
-        assertEquals(100, testPlayer.getInitialMana());
+        assertEquals(1, testPlayer.getInitialMana());
 
         testPlayer.heal(10);
         testPlayer.takeDamage(3);

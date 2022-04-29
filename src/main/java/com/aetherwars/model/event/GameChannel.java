@@ -16,7 +16,6 @@ public class GameChannel {
     private List<SummonedCardController> player1_summonedController;
     private List<SummonedCardController> player2_summonedController;
     private List<HandCardController> cardOnHandController;
-    private Map<Publisher, List<Subscriber>> subscribers;
     private Phase phase;
     private boolean sourcePlan;
     private boolean sourceAttack;

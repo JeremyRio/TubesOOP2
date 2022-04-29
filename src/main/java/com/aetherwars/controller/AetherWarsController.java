@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -54,7 +55,7 @@ public class AetherWarsController implements Initializable {
     HBox hand_card_box;
 
     @FXML
-    Text player1_health_text, player2_health_text;
+    Text player1_health_text, player2_health_text, turn_text, player_turn_text;
 
     @FXML
     Text mana_text, deck_text;
@@ -68,6 +69,9 @@ public class AetherWarsController implements Initializable {
     @FXML
     Pane description_pane;
 
+    @FXML
+    ProgressBar player1_progress_bar, player2_progress_bar;
+
     private AnchorPane[][] player_board;
     private int current_player = 0;
     private int phase_idx = 1;
@@ -78,11 +82,14 @@ public class AetherWarsController implements Initializable {
     private Phase[] phase = new Phase[] {Phase.DRAW, Phase.PLAN, Phase.ATTACK, Phase.END};
     private DrawCardController drawCardController;
     private List<Card> drawnCard;
+    private int turn;
+
 
     public AetherWarsController(Player player1, Player player2, GameChannel channel){
         this.player1 = player1;
         this.player2 = player2;
         this.channel = channel;
+        this.turn = 1;
     }
 
     public void initialize(URL Location, ResourceBundle resources) {
@@ -130,6 +137,7 @@ public class AetherWarsController implements Initializable {
                         channel.getSourceAttackController().getSummonedCard().setHasAttacked(true);
                         channel.setSourceAttack(false);
                         player1_health_text.setText(Integer.toString(playerList[0].getHealth()));
+                        player1_progress_bar.setProgress((double) playerList[0].getHealth()/80);
                         if(playerList[0].getHealth() == 0){
                             createWinWindow("PLAYER 2");
                         }
@@ -144,6 +152,7 @@ public class AetherWarsController implements Initializable {
                         channel.getSourceAttackController().getSummonedCard().setHasAttacked(true);
                         channel.setSourceAttack(false);
                         player2_health_text.setText(Integer.toString(playerList[1].getHealth()));
+                        player2_progress_bar.setProgress((double) playerList[1].getHealth()/80);
                         if(playerList[1].getHealth() == 0){
                             createWinWindow("PLAYER 1");
                         }
@@ -159,6 +168,9 @@ public class AetherWarsController implements Initializable {
                     switch(channel.getPhase()){
                         case DRAW:
                             this.current_player = (this.current_player + 1) % 2;
+                            this.turn++;
+                            turn_text.setText(String.valueOf(this.turn));
+                            player_turn_text.setText(String.valueOf(getCurrentPlayerIDX() + 1));
                             channel.getSummonedController(0).forEach(controller -> {
                                 controller.getSummonedCard().updateDuration();
                                 controller.updateCard();

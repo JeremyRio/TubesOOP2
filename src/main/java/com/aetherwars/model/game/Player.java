@@ -19,9 +19,9 @@ public class Player {
     public Player(String name, List<Card> deckCard, int initialDeckSize){
         handCard = new ArrayList<>();
         this.name = name;
-        this.health = 1;
-        this.mana = 100;
-        this.initialMana = 100;
+        this.health = 80;
+        this.mana = 1;
+        this.initialMana = 1;
         this.initialDeckSize = initialDeckSize;
         this.deckCard = deckCard;
     }
