@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
-public class SummonedCard {
+public class SummonedCard implements Level {
     private int exp;
     private int level;
     private float summonedHealth;
