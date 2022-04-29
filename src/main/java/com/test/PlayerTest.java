@@ -12,21 +12,19 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-    private List<Card> deck;
     private Player testPlayer;
 
     @Before
     public void start() {
         CardDealer allCards = new CardDealer();
-        deck = allCards.getPlayer1Deck();
+        List<Card> deck = allCards.getPlayer1Deck();
         testPlayer = new Player("Player", deck, deck.size());
     }
 
     @Test
     public void MethodTest() {
         assertEquals(1, testPlayer.getHealth());
-        assertEquals(100, testPlayer.getDeckSize());
-        assertEquals(deck.size(), testPlayer.getInitialDeckSize());
+        assertEquals(24, testPlayer.getInitialDeckSize());
         assertEquals(100, testPlayer.getInitialMana());
 
         testPlayer.heal(10);
@@ -38,7 +36,7 @@ public class PlayerTest {
 
         assertEquals(1, testPlayer.getMana());
         assertEquals(8, testPlayer.getHealth());
-        assertEquals(99, testPlayer.getDeckSize());
+        assertEquals(23, testPlayer.getDeckSize());
         assertEquals(1, testPlayer.getHandCardList().size());
 
         testPlayer.resetMana();
