@@ -25,13 +25,11 @@ public class HandCardController implements Initializable {
 
     @FXML
     ImageView image_card;
-    private Card card;
 
     @FXML
     StackPane card_pane;
 
-
-
+    private Card card;
     private GameChannel gameChannel;
 
 
@@ -54,29 +52,21 @@ public class HandCardController implements Initializable {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     switch (gameChannel.getPhase()) {
                         case DRAW:
-                            gameChannel.getMainController().addDeckCard(card);
+                            gameChannel.getMainController().addDeckCard(this.card);
                             break;
                         case PLAN:
                             if(event.getClickCount() == 2){
-                              if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
-                                    destroyCard();
-                              }
-                            }else if(gameChannel.getMainController().getCurrentPlayer().getMana() >= this.card.getMana()){
-                                    gameChannel.getHandCardController().stream().filter(c -> !c.equals(this)).forEach(c -> {
-                                        c.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff");
+                                destroyCard();
+                            } else if(gameChannel.getMainController().getCurrentPlayer().getMana() >= this.card.getMana()){
+                                gameChannel.getHandCardController().stream().filter(c -> !c.equals(this)).forEach(c -> {
+                                c.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: #3D3107; -fx-background-color: #ffffffff");
                                     });
-                                    this.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: green; -fx-background-color: #ffffffff");
-                                    gameChannel.setSourcePlan(true);
-                                    gameChannel.setSourcePlanController(this);
-                                    out.println("Source: " + gameChannel.isSourcePlan());
+                                this.card_pane.setStyle("-fx-border-width:  4; -fx-border-color: green; -fx-background-color: #ffffffff");
+                                gameChannel.setSourcePlan(true);
+                                gameChannel.setSourcePlanController(this);
+                                out.println("Source: " + gameChannel.isSourcePlan());
                             }
                             break;
-                        case END:
-                            if(event.getClickCount() == 2){
-                                if(ConfirmationBox.display(event.getScreenX(), event.getScreenY(), "Discarding HandCard", "Discarding ["+card.getName()+"]?")){
-                                    destroyCard();
-                                }
-                            }
                     }
                 }
             });

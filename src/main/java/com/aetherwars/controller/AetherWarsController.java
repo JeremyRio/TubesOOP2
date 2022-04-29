@@ -235,15 +235,12 @@ public class AetherWarsController implements Initializable {
             getCurrentPlayer().addDeckCard(drawnCard);
             updateUIText();
             getCurrentPlayer().addHandCard(card);
-            List<Card> handCard = getCurrentPlayer().getHandCardList();
-            for (Card c : handCard) {
-                FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
-                handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
-                hand_card_box.getChildren().add(handCardLoader.load());
-                HandCardController controller = handCardLoader.getController();
-                controller.setCard(c);
-                channel.addHandCardController(controller);
-            }
+            FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
+            handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
+            hand_card_box.getChildren().add(handCardLoader.load());
+            HandCardController controller = handCardLoader.getController();
+            controller.setCard(card);
+            channel.addHandCardController(controller);
             drawCardController.setVisible(false);
             this.switchPhase();
         } catch (Exception e) {
@@ -348,24 +345,43 @@ public class AetherWarsController implements Initializable {
     }
 
     public void drawCard(){
-        drawCardController.setVisible(true);
-        channel.getHandCardController().clear();
         hand_card_box.getChildren().clear();
-        drawnCard = new ArrayList<>();
-        drawnCard = playerList[current_player].draw();
-        drawCardController.draw_card_box.getChildren().clear();
-        drawnCard.forEach(c -> {
-            try {
+        channel.getHandCardController().clear();
+        List<Card> handCard = getCurrentPlayer().getHandCardList();
+        try {
+            for (Card c : handCard) {
                 FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
                 handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
-                drawCardController.draw_card_box.getChildren().add(handCardLoader.load());
+                hand_card_box.getChildren().add(handCardLoader.load());
                 HandCardController controller = handCardLoader.getController();
                 controller.setCard(c);
-            }catch (Exception e){
-                out.println("Error in DrawCard: " + e);
-                e.printStackTrace();
+                channel.addHandCardController(controller);
             }
-        });
+        }catch (Exception e){
+            out.println("Error in DrawCard: " + e);
+            e.printStackTrace();
+        }
+        if(!getCurrentPlayer().getDeckCard().isEmpty()) {
+            drawCardController.setVisible(true);
+            drawnCard = new ArrayList<>();
+            drawnCard = playerList[current_player].draw();
+            drawCardController.draw_card_box.getChildren().clear();
+            drawnCard.forEach(c -> {
+                try {
+                    FXMLLoader handCardLoader = new FXMLLoader(getClass().getResource("/com/aetherwars/view/HandCard.fxml"));
+                    handCardLoader.setControllerFactory(controller -> new HandCardController(channel));
+                    drawCardController.draw_card_box.getChildren().add(handCardLoader.load());
+                    HandCardController controller = handCardLoader.getController();
+                    controller.setCard(c);
+                } catch (Exception e) {
+                    out.println("Error in DrawCard: " + e);
+                    e.printStackTrace();
+                }
+            });
+        }else{
+            createWinWindow("PLAYER " + ((getCurrentPlayerIDX() + 1) % 2 + 1));
+        }
+
     }
     public void switchPhase(){
         int prev_phase_idx = phase_idx - 1;

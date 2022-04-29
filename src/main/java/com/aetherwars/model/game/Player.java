@@ -41,9 +41,9 @@ public class Player {
     }
 
     public List<Card> draw() {
-        deckCard.forEach(c -> c.toString());
         List<Card> drawnCard = new ArrayList<>();
-        for(int i = 0; i < 3 && !deckCard.isEmpty(); i++){
+        deckCard.forEach(c -> c.toString());
+        for (int i = 0; i < 3 && !deckCard.isEmpty(); i++) {
             drawnCard.add(deckCard.remove(0));
         }
         drawnCard.forEach(c -> System.out.println(c.toString()));
@@ -91,6 +91,10 @@ public class Player {
 
     public int getInitialMana(){
         return this.initialMana;
+    }
+
+    public List<Card> getDeckCard(){
+        return this.deckCard;
     }
 
     public int getMana(){

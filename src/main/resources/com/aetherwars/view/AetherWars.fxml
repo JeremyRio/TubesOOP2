@@ -68,7 +68,10 @@
                   <AnchorPane fx:id="player1_zone1" layoutX="80.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player1_zone5" layoutX="300.0" layoutY="51.0" prefHeight="101.0" prefWidth="101.0" />
                   <AnchorPane fx:id="player1_zone2" layoutX="190.0" layoutY="1.0" prefHeight="101.0" prefWidth="101.0" />
-                  <Text fx:id="player1_health_text" fill="WHITE" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0" />
+                  <Text fx:id="player1_health_text" fill="WHITE" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="60.0">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font></Text>
                </children>
             </Pane>
             <HBox fx:id="hand_card_box" layoutX="24.0" layoutY="410.0" prefHeight="207.0" prefWidth="642.0" spacing="5.0">

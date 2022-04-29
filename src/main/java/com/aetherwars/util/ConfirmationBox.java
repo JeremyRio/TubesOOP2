@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 
 public class ConfirmationBox {
-    static boolean answer;
+    static boolean answer = false;
 
     public static boolean display(double x, double y, String title, String message) {
         Stage window = new Stage();

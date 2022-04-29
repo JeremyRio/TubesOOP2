@@ -262,7 +262,7 @@ public class SummonedCard {
 
     // Adds active spells
     public void addActiveSpell(SpellCard spellCard) {
-        switch (spellCard.getSpellType()){
+        switch (spellCard.getSpellType()) {
             case PTN:
                 PotionSpellCard potionSC = new PotionSpellCard((PotionSpellCard) spellCard);
                 potionSC.setDuration(spellCard.getDuration() * 2);
@@ -278,7 +278,7 @@ public class SummonedCard {
             case MORPH:
                 MorphSpellCard morphSC = new MorphSpellCard((MorphSpellCard) spellCard);
                 morphSC.setDuration(spellCard.getDuration() * 2);
-                this.character = new  CharacterCard(morphSC.getMorphedCharacter());
+                this.character = new CharacterCard(morphSC.getMorphedCharacter());
                 this.exp = 0;
                 this.level = 1;
                 this.activeSpells = new ArrayList<>();
@@ -292,11 +292,14 @@ public class SummonedCard {
             case SWAP:
                 SwapSpellCard swapSC = new SwapSpellCard((SwapSpellCard) spellCard);
                 swapSC.setDuration(spellCard.getDuration() * 2);
-                if(!this.isSwap) {
+                if (this.isSwap) {
+                    SwapSpellCard swapInList = activeSpells.stream().filter(SwapSpellCard.class::isInstance).map(SwapSpellCard.class::cast).findFirst().get();
+                    swapInList.setDuration(swapInList.getDuration() + swapSC.getDuration());
+                }else{
+                    swapFunction();
                     this.isSwap = true;
-                    this.swapFunction();
+                    activeSpells.add(0, swapSC);
                 }
-                activeSpells.add(0, swapSC);
                 break;
             default:
         }

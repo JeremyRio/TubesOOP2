@@ -2,6 +2,7 @@ package com.aetherwars.controller;
 
 import com.aetherwars.model.card.*;
 import com.aetherwars.model.event.GameChannel;
+import com.aetherwars.model.game.Phase;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -54,13 +55,21 @@ public class SummonedCardController implements Initializable {
 
         this.card_pane.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
-                        switch(channel.getPhase()) {
+                        if (event.getClickCount() == 2) {
+                            if (channel.getPhase() == Phase.PLAN && channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
+                                this.summonedCard.setEmpty(true);
+                                this.card_pane.setOpacity(0);
+                                this.channel.getMainController().description_pane.setOpacity(0);
+                                this.updateCard();
+                            }
+                        }else{
+                        switch (channel.getPhase()) {
                             case PLAN:
-                                if(channel.isSourcePlan()){
+                                if (channel.isSourcePlan()) {
                                     HandCardController sourceController = channel.getSourcePlanController();
                                     Card card = sourceController.getCard();
-                                    if(card instanceof CharacterCard && this.summonedCard.isEmpty()){
-                                        if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
+                                    if (card instanceof CharacterCard && this.summonedCard.isEmpty()) {
+                                        if (channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                             card_pane.setOpacity(1);
                                             CharacterCard characterCard = new CharacterCard((CharacterCard) card);
                                             this.setSummonedCard(new SummonedCard(characterCard));
@@ -71,9 +80,9 @@ public class SummonedCardController implements Initializable {
                                             channel.getMainController().updateUIText();
                                             channel.getMainController().setSummonedDescription(this.summonedCard);
                                         }
-                                    } else if (card instanceof SpellCard && !this.summonedCard.isEmpty()){
-                                        if(card instanceof LevelSpellCard){
-                                            if(!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() > (int) Math.ceil((float) this.summonedCard.getLevel() / 2)){
+                                    } else if (card instanceof SpellCard && !this.summonedCard.isEmpty()) {
+                                        if (card instanceof LevelSpellCard) {
+                                            if (!(this.summonedCard.getLevel() == 1 && card.getID() == 402) && channel.getMainController().getCurrentPlayer().getMana() > (int) Math.ceil((float) this.summonedCard.getLevel() / 2)) {
                                                 summonedCard.addActiveSpell((SpellCard) card);
                                                 sourceController.destroyCard();
                                                 channel.setSourcePlan(false);
@@ -81,19 +90,19 @@ public class SummonedCardController implements Initializable {
                                                 channel.getMainController().updateUIText();
 
                                                 channel.getMainController().setSummonedDescription(this.summonedCard);
-                                                if (summonedCard.isDead()){
+                                                if (summonedCard.isDead()) {
                                                     this.summonedCard.setEmpty(true);
                                                     this.card_pane.setOpacity(0);
                                                 }
                                             }
-                                        } else{
+                                        } else {
                                             summonedCard.addActiveSpell((SpellCard) card);
                                             sourceController.destroyCard();
                                             channel.setSourcePlan(false);
                                             channel.getMainController().getCurrentPlayer().decreaseMana(card.getMana());
                                             channel.getMainController().updateUIText();
                                             channel.getMainController().setSummonedDescription(this.summonedCard);
-                                            if (summonedCard.isDead()){
+                                            if (summonedCard.isDead()) {
                                                 this.summonedCard.setEmpty(true);
                                                 this.card_pane.setOpacity(0);
                                             }
@@ -103,35 +112,35 @@ public class SummonedCardController implements Initializable {
                                 }
                                 break;
                             case ATTACK:
-                                if(!this.summonedCard.isEmpty()) {
+                                if (!this.summonedCard.isEmpty()) {
                                     if (channel.isSourceAttack() && !channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
                                         SummonedCardController sourceController = channel.getSourceAttackController();
                                         sourceController.getSummonedCard().Attack(this.summonedCard);
-                                        if(this.summonedCard.isDead() && !sourceController.getSummonedCard().isDead()){
+                                        if (this.summonedCard.isDead() && !sourceController.getSummonedCard().isDead()) {
                                             this.summonedCard.setEmpty(true);
                                             this.card_pane.setOpacity(0);
                                             sourceController.getSummonedCard().addExp(this.summonedCard.getLevel());
-                                        }else if(sourceController.getSummonedCard().isDead() && !this.summonedCard.isDead()){
+                                        } else if (sourceController.getSummonedCard().isDead() && !this.summonedCard.isDead()) {
                                             sourceController.getSummonedCard().setEmpty(true);
                                             sourceController.card_pane.setOpacity(0);
                                             this.summonedCard.addExp(sourceController.getSummonedCard().getLevel());
-                                        }else if (this.summonedCard.isDead() && sourceController.getSummonedCard().isDead()){
+                                        } else if (this.summonedCard.isDead() && sourceController.getSummonedCard().isDead()) {
                                             this.summonedCard.setEmpty(true);
                                             this.card_pane.setOpacity(0);
                                             sourceController.getSummonedCard().setEmpty(true);
                                             sourceController.card_pane.setOpacity(0);
                                         }
                                         this.updateCard();
-                                        if(this.summonedCard.isEmpty()){
+                                        if (this.summonedCard.isEmpty()) {
                                             channel.getMainController().description_pane.setOpacity(0);
-                                        }else{
+                                        } else {
                                             channel.getMainController().setSummonedDescription(this.summonedCard);
                                         }
                                         sourceController.updateCard();
                                         sourceController.getSummonedCard().setHasAttacked(true);
                                         channel.setSourceAttack(false);
-                                    } else if (channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
-                                        if(!this.summonedCard.hasSummoned() && !this.summonedCard.hasAttacked()) {
+                                    } else if (channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)) {
+                                        if (!this.summonedCard.hasSummoned() && !this.summonedCard.hasAttacked()) {
                                             out.println("PASS ATTACK MODE");
                                             channel.setSourceAttack(true);
                                             channel.setSourceAttackController(this);
@@ -142,6 +151,7 @@ public class SummonedCardController implements Initializable {
                             default:
                                 break;
                         }
+                    }
                     }else if(event.getButton() == MouseButton.SECONDARY){
                         if(channel.getSummonedController(channel.getMainController().getCurrentPlayerIDX()).contains(this)){
                             if(channel.getMainController().getCurrentPlayer().getMana() > 0 && this.summonedCard.getLevel() < 10){
